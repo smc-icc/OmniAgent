@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "sourceRevision": "50c40a51a08e6466f17ee0260b3016fffe4cb045",
-  "createdAt": "2026-10-26T08:56:52.565Z",
+  "sourceRevision": "99b2a41e4f588a438fb18672ab5bd74ead71a723",
+  "createdAt": "2026-10-26T09:06:39.404Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -2606,6 +2606,22 @@
     {
       "path": "docs/community/README.md",
       "sha256": "c0f25e91f39a78f910cb88413d1dd144ceb3bcf4276675e03ca7dca7933048a9"
+    },
+    {
+      "path": "docs/community/screenshots/omni-customers.png",
+      "sha256": "0de00b8e9609c9e67a559131083d172db60f36bf3ab107a94dc9217d80c4661c"
+    },
+    {
+      "path": "docs/community/screenshots/omni-dashboard.png",
+      "sha256": "063c06c1178796c4ea3ea833aa5fe0b8b18d79c028cfe090f7a90728e287ce34"
+    },
+    {
+      "path": "docs/community/screenshots/omni-omnichannel.png",
+      "sha256": "79b9bfef144f7d7bf8a20cc060878cc5000b7e7c1c163423b810aeef727412f7"
+    },
+    {
+      "path": "docs/community/screenshots/omni-roles.png",
+      "sha256": "2eb00930f8a43b39babd9240db3b650fb7fb23832c12af1920e73e1eb9f2148b"
     },
     {
       "path": "docs/community/VERIFICATION-20261020.md",
@@ -5521,7 +5537,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "e9a6f750f7e1a8998de3b5341667976bcff1d139d3a47f4f1a2d356127195cdb"
+      "sha256": "a79739f14de94f71224f8d67c0f49b849a600fddbb02810e4871594915c2b758"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
