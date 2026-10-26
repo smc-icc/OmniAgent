@@ -1,0 +1,10 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "omniagent-harmonyos",
+  "version": "0.1.0",
+  "description": "OmniAgent HarmonyOS shell",
+  "main": "",
+  "author": "sm-cloud",
+  "license": "ISC",
+  "dependencies": {}
+}

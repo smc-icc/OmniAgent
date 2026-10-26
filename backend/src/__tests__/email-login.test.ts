@@ -1,0 +1,25 @@
+import { beforeEach, expect, it, vi } from 'vitest';
+import Fastify from 'fastify';
+import jwt from '@fastify/jwt';
+const mocks = vi.hoisted(() => ({findMany:vi.fn(),update:vi.fn(),enabled:vi.fn()}));
+vi.mock('../plugins/db.js',()=>({prisma:{users:{findMany:mocks.findMany,update:mocks.update}}}));
+vi.mock('../shared/services/conf-tenancy.js',()=>({confTenancyEnabled:()=>false,managedContext:vi.fn()}));
+vi.mock('../shared/services/system-superuser.js',()=>({isSystemSuperuser:(u: { uid?: string | null; type?: string | null } | null)=>u?.uid==='conf-system:admin' && u?.type==='SuperAdmin',assertBusinessEmailAvailable:vi.fn()}));
+vi.mock('../modules/access/access.enabled.js',()=>({assertOperatorEnabled:mocks.enabled}));
+vi.mock('../shared/utils/email.js',()=>({sendConfirmationEmail:vi.fn(),sendPasswordResetEmail:vi.fn()}));
+import { signIn } from '../modules/auth/auth.controller.js';
+import { hashPassword } from '../shared/utils/password.js';
+import { resetLoginSessions } from '../shared/services/login-session.js';
+const password='synthetic-email-password';
+let user:Record<string,unknown>;
+beforeEach(async()=>{vi.clearAllMocks();resetLoginSessions();user={id:7,email:'seat@example.test',uid:'1001',type:'User',name:'Seat',encrypted_password:await hashPassword(password),provider:'email',pubsub_token:'synthetic',confirmed_at:new Date(),created_at:new Date(),custom_attributes:{}};mocks.findMany.mockResolvedValue([user]);mocks.update.mockResolvedValue(user);});
+async function send(workNo:string,pw=password,extra:Record<string,unknown>={}){const app=Fastify();await app.register(jwt,{secret:'synthetic-test-only-secret'});app.post('/auth/sign_in',signIn);try{return await app.inject({method:'POST',url:'/auth/sign_in',payload:{work_no:workNo,password:pw,...extra}});}finally{await app.close();}}
+it('authenticates a seat by work number and preserves the canonical UID',async()=>{const res=await send('1001');expect(res.statusCode).toBe(200);expect(mocks.findMany).toHaveBeenCalled();expect(res.json().data.uid).toBe('1001');expect(res.body).not.toContain(user.encrypted_password);});
+it('rejects incorrect password without changing sign-in state',async()=>{const res=await send('1001','wrong');expect(res.statusCode).toBe(401);expect(mocks.update).not.toHaveBeenCalled();});
+it.each([0])('rejects absent ownership (%i matches)',async n=>{mocks.findMany.mockResolvedValue(Array.from({length:n},()=>user));expect((await send('1001')).statusCode).toBe(401);expect(mocks.update).not.toHaveBeenCalled();});
+it('does not treat the system superuser uid as a seat work number',async()=>{mocks.findMany.mockResolvedValue([user]);user.uid='conf-system:admin';user.type='SuperAdmin';expect((await send('conf-system:admin')).statusCode).toBe(401);expect(mocks.update).not.toHaveBeenCalled();});
+it('asks for a VDN when the same work number and password match more than one seat',async()=>{const other={...user,id:8,uid:'conf-vdn:2:9:1001',name:'VDN 2'};mocks.findMany.mockResolvedValue([user,other]);const res=await send('1001');expect(res.statusCode).toBe(200);expect(res.json().status).toBe('select_vdn');expect(res.json().vdns).toHaveLength(2);expect(mocks.update).not.toHaveBeenCalled();});
+it('logs in with the remembered VDN when its id and name are unchanged',async()=>{user.ui_settings={default_login_vdn:{user_id:7,vdn_id:null,name:'Seat'}};const other={...user,id:8,uid:'conf-vdn:2:9:1001',name:'VDN 2',ui_settings:{}};mocks.findMany.mockResolvedValue([user,other]);const res=await send('1001');expect(res.statusCode).toBe(200);expect(res.json().status).not.toBe('select_vdn');expect(res.json().data.uid).toBe('1001');});
+it('asks again when the remembered VDN name changed',async()=>{user.ui_settings={default_login_vdn:{user_id:7,vdn_id:null,name:'旧坐席'}};const other={...user,id:8,uid:'conf-vdn:2:9:1001',name:'VDN 2',ui_settings:{}};mocks.findMany.mockResolvedValue([user,other]);const res=await send('1001');expect(res.statusCode).toBe(200);expect(res.json().status).toBe('select_vdn');expect(mocks.update).not.toHaveBeenCalled();});
+it('enters the VDN chosen from the list',async()=>{const other={...user,id:8,uid:'conf-vdn:2:9:1001',name:'VDN 2'};mocks.findMany.mockResolvedValue([user,other]);const res=await send('1001',password,{user_id:8,vdn_id:2});expect(res.statusCode).toBe(200);expect(res.json().data.uid).toBe('conf-vdn:2:9:1001');});
+it('validates work number before reading users',async()=>{const app=Fastify();await app.register(jwt,{secret:'synthetic-test-only-secret'});app.post('/auth/sign_in',signIn);const res=await app.inject({method:'POST',url:'/auth/sign_in',payload:{work_no:'',password}});await app.close();expect(res.statusCode).not.toBe(200);expect(mocks.findMany).not.toHaveBeenCalled();});

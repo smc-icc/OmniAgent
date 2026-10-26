@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 来电页做成半透明壳：真正的来电 UI 是 WebView 里的 Vue 页面，
+         这里只负责点亮屏幕并把 App 顶到前台 -->
+    <style name="Theme.OmniSip.IncomingCall" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

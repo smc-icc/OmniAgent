@@ -1,0 +1,2601 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pg_stat_statements, pg_trgm, pgcrypto, plpgsql, vector]
+}
+
+// ── Core: Users, Accounts, Auth ──
+
+model users {
+  id                     Int                      @id @default(autoincrement())
+  provider               String                   @default("email")
+  uid                    String                   @default("")
+  encrypted_password     String                   @default("")
+  reset_password_token   String?
+  reset_password_sent_at DateTime?
+  remember_created_at    DateTime?
+  sign_in_count          Int                      @default(0)
+  current_sign_in_at     DateTime?
+  last_sign_in_at        DateTime?
+  current_sign_in_ip     String?
+  last_sign_in_ip        String?
+  confirmation_token     String?
+  confirmed_at           DateTime?
+  confirmation_sent_at   DateTime?
+  unconfirmed_email      String?
+  name                   String
+  display_name           String?
+  email                  String?
+  tokens                 Json?
+  created_at             DateTime                 @default(now())
+  updated_at             DateTime                 @updatedAt
+  pubsub_token           String?                  @unique
+  availability           Int                      @default(0)
+  ui_settings            Json                     @default("{}")
+  social_identities      social_user_identities[]
+  custom_attributes      Json                     @default("{}")
+  type                   String?
+  message_signature      String?
+  otp_secret             String?                  @unique
+  consumed_timestep      Int?
+  otp_required_for_login Boolean                  @default(false)
+  otp_backup_codes       String?
+
+  account_users              account_users[]
+  notification_subscriptions notification_subscriptions[]
+  notifications              notifications[]
+  mentions                   mentions[]
+  copilot_threads            copilot_threads[]
+  custom_filters             custom_filters[]
+  dashboard_apps             dashboard_apps[]
+  team_members               team_members[]
+  notes                      notes[]
+  macros                     macros[]                     @relation("CreatedBy")
+  macros_updated             macros[]                     @relation("UpdatedBy")
+  conversations              conversations[]              @relation("Assignee")
+  csat_survey_responses      csat_survey_responses[]      @relation("AssignedAgent")
+  leaves                     leaves[]
+  leaves_approved            leaves[]                     @relation("ApprovedBy")
+  conversation_participants  conversation_participants[]
+  inbox_members              inbox_members[]
+  agent_memos                agent_memos[]
+  agent_calendar_events      agent_calendar_events[]
+  agent_shift_boards         agent_shift_boards[]
+  opportunities              opportunities[]
+  rest_requests_as_applicant agent_rest_requests[]        @relation("RestApplicant")
+  rest_requests_as_leader    agent_rest_requests[]        @relation("RestLeader")
+
+  @@index([email])
+  @@index([uid, provider], map: "index_users_on_uid_and_provider")
+  @@index([otp_required_for_login])
+}
+
+model accounts {
+  id                    Int                    @id @default(autoincrement())
+  name                  String
+  social_organizations  social_organizations[]
+  created_at            DateTime               @default(now())
+  updated_at            DateTime               @updatedAt
+  locale                Int                    @default(0)
+  domain                String?                @db.VarChar(100)
+  support_email         String?                @db.VarChar(100)
+  feature_flags         BigInt                 @default(0)
+  auto_resolve_duration Int?
+  limits                Json                   @default("{}")
+  custom_attributes     Json                   @default("{}")
+  status                Int                    @default(0)
+  internal_attributes   Json                   @default("{}")
+  settings              Json                   @default("{}")
+
+  account_users               account_users[]
+  agent_bots                  agent_bots[]
+  saml_settings               account_saml_settings[]
+  automation_rules            automation_rules[]
+  campaigns                   campaigns[]
+  contacts                    contacts[]
+  companies                   companies[]
+  conversations               conversations[]
+  custom_attribute_defs       custom_attribute_definitions[]
+  custom_filters              custom_filters[]
+  custom_roles                custom_roles[]
+  csat_survey_responses       csat_survey_responses[]
+  dashboard_apps              dashboard_apps[]
+  data_imports                data_imports[]
+  inboxes                     inboxes[]
+  labels                      labels[]
+  macros                      macros[]
+  mentions                    mentions[]
+  messages                    messages[]
+  notes                       notes[]
+  notifications               notifications[]
+  portals                     portals[]
+  opportunities               opportunities[]
+  reporting_events            reporting_events[]
+  reporting_events_rollups    reporting_events_rollups[]
+  sla_policies                sla_policies[]
+  applied_slas                applied_slas[]
+  sla_events                  sla_events[]
+  conversation_participants   conversation_participants[]
+  teams                       teams[]
+  webhooks                    webhooks[]
+  working_hours               working_hours[]
+  email_templates             email_templates[]
+  agent_capacity_policies     agent_capacity_policies[]
+  assignment_policies         assignment_policies[]
+  captain_assistants          captain_assistants[]
+  captain_assistant_responses captain_assistant_responses[]
+  captain_documents           captain_documents[]
+  captain_custom_tools        captain_custom_tools[]
+  captain_scenarios           captain_scenarios[]
+  copilot_threads             copilot_threads[]
+  copilot_messages            copilot_messages[]
+  articles                    articles[]
+  categories                  categories[]
+  leaves                      leaves[]
+
+  @@index([status])
+}
+
+model account_users {
+  id                       Int       @id @default(autoincrement())
+  account_id               Int?
+  user_id                  Int?
+  role                     Int       @default(0)
+  inviter_id               Int?
+  created_at               DateTime  @default(now())
+  updated_at               DateTime  @updatedAt
+  active_at                DateTime?
+  availability             Int       @default(0)
+  auto_offline             Boolean   @default(true)
+  custom_role_id           Int?
+  agent_capacity_policy_id Int?
+
+  account               accounts?                @relation(fields: [account_id], references: [id])
+  user                  users?                   @relation(fields: [user_id], references: [id])
+  custom_role           custom_roles?            @relation(fields: [custom_role_id], references: [id])
+  agent_capacity_policy agent_capacity_policies? @relation(fields: [agent_capacity_policy_id], references: [id])
+
+  @@unique([account_id, user_id], map: "uniq_user_id_per_account_id")
+  @@index([account_id])
+  @@index([user_id])
+  @@index([custom_role_id])
+  @@index([agent_capacity_policy_id])
+}
+
+model access_tokens {
+  id         Int      @id @default(autoincrement())
+  owner_type String
+  owner_id   BigInt
+  token      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([token])
+  @@index([owner_type, owner_id])
+}
+
+model account_saml_settings {
+  id            Int      @id @default(autoincrement())
+  account_id    Int
+  sso_url       String?
+  certificate   String?
+  sp_entity_id  String?
+  idp_entity_id String?
+  role_mappings Json     @default("{}")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+
+  @@index([account_id])
+}
+
+// ── Inboxes & Channels ──
+
+model inboxes {
+  id                            Int      @id @default(autoincrement())
+  channel_id                    Int
+  account_id                    Int
+  name                          String
+  created_at                    DateTime @default(now())
+  updated_at                    DateTime @updatedAt
+  channel_type                  String?
+  enable_auto_assignment        Boolean  @default(true)
+  greeting_enabled              Boolean  @default(false)
+  greeting_message              String?
+  email_address                 String?
+  working_hours_enabled         Boolean  @default(false)
+  out_of_office_message         String?
+  timezone                      String   @default("UTC")
+  enable_email_collect          Boolean  @default(true)
+  csat_survey_enabled           Boolean  @default(false)
+  allow_messages_after_resolved Boolean  @default(true)
+  auto_assignment_config        Json     @default("{}")
+  lock_to_single_conversation   Boolean  @default(false)
+  portal_id                     Int?
+  sender_name_type              Int      @default(0)
+  business_name                 String?
+  csat_config                   Json     @default("{}")
+
+  account                   accounts                    @relation(fields: [account_id], references: [id])
+  portal                    portals?                    @relation(fields: [portal_id], references: [id])
+  agent_bot_inboxes         agent_bot_inboxes[]
+  campaigns                 campaigns[]
+  contact_inboxes           contact_inboxes[]
+  conversations             conversations[]
+  inbox_members             inbox_members[]
+  messages                  messages[]
+  webhooks                  webhooks[]
+  working_hours             working_hours[]
+  captain_inboxes           captain_inboxes[]
+  inbox_assignment_policies inbox_assignment_policies[]
+  inbox_capacity_limits     inbox_capacity_limits[]
+  reporting_events          reporting_events[]
+  sla_events                sla_events[]
+  integrations_hooks        integrations_hooks[]
+
+  @@index([account_id])
+  @@index([channel_id, channel_type])
+}
+
+model inbox_members {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  inbox_id   Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  inbox inboxes @relation(fields: [inbox_id], references: [id])
+  user  users   @relation(fields: [user_id], references: [id])
+
+  @@unique([inbox_id, user_id])
+  @@index([inbox_id])
+}
+
+model agent_bot_inboxes {
+  id           Int      @id @default(autoincrement())
+  inbox_id     Int?
+  agent_bot_id Int?
+  status       Int      @default(0)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  account_id   Int?
+
+  inbox     inboxes?    @relation(fields: [inbox_id], references: [id])
+  agent_bot agent_bots? @relation(fields: [agent_bot_id], references: [id])
+}
+
+model agent_bots {
+  id           Int      @id @default(autoincrement())
+  name         String?
+  description  String?
+  outgoing_url String?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  account_id   Int?
+  bot_type     Int      @default(0)
+  bot_config   Json     @default("{}")
+
+  account           accounts?           @relation(fields: [account_id], references: [id])
+  agent_bot_inboxes agent_bot_inboxes[]
+
+  @@index([account_id])
+}
+
+model channel_api {
+  id                    Int      @id @default(autoincrement())
+  account_id            Int
+  webhook_url           String?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  identifier            String?
+  hmac_token            String?
+  hmac_mandatory        Boolean  @default(false)
+  additional_attributes Json     @default("{}")
+
+  @@unique([hmac_token])
+  @@unique([identifier])
+}
+
+model channel_email {
+  id                        Int      @id @default(autoincrement())
+  account_id                Int
+  email                     String
+  forward_to_email          String
+  created_at                DateTime @default(now())
+  updated_at                DateTime @updatedAt
+  imap_enabled              Boolean  @default(false)
+  imap_address              String   @default("")
+  imap_port                 Int      @default(0)
+  imap_login                String   @default("")
+  imap_password             String   @default("")
+  imap_enable_ssl           Boolean  @default(true)
+  smtp_enabled              Boolean  @default(false)
+  smtp_address              String   @default("")
+  smtp_port                 Int      @default(0)
+  smtp_login                String   @default("")
+  smtp_password             String   @default("")
+  smtp_domain               String   @default("")
+  smtp_enable_starttls_auto Boolean  @default(true)
+  smtp_authentication       String   @default("login")
+  smtp_openssl_verify_mode  String   @default("none")
+  smtp_enable_ssl_tls       Boolean  @default(false)
+  provider_config           Json     @default("{}")
+  provider                  String?
+  verified_for_sending      Boolean  @default(false)
+
+  @@unique([email])
+  @@unique([forward_to_email])
+}
+
+model channel_facebook_pages {
+  id                Int      @id @default(autoincrement())
+  page_id           String
+  user_access_token String
+  page_access_token String
+  account_id        Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  instagram_id      String?
+
+  @@unique([page_id, account_id])
+  @@index([page_id])
+}
+
+model channel_twitter_profiles {
+  id                          Int      @id @default(autoincrement())
+  profile_id                  String
+  twitter_access_token        String
+  twitter_access_token_secret String
+  account_id                  Int
+  created_at                  DateTime @default(now())
+  updated_at                  DateTime @updatedAt
+  tweets_enabled              Boolean  @default(true)
+
+  @@unique([account_id, profile_id])
+}
+
+model channel_web_widgets {
+  id                    Int      @id @default(autoincrement())
+  website_url           String?
+  account_id            Int?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  website_token         String?
+  widget_color          String   @default("#1f93ff")
+  welcome_title         String?
+  welcome_tagline       String?
+  feature_flags         Int      @default(7)
+  reply_time            Int      @default(0)
+  hmac_token            String?
+  pre_chat_form_enabled Boolean  @default(false)
+  pre_chat_form_options Json     @default("{}")
+  hmac_mandatory        Boolean  @default(false)
+  continuity_via_email  Boolean  @default(true)
+  allowed_domains       String   @default("")
+
+  @@unique([hmac_token])
+  @@unique([website_token])
+}
+
+model channel_whatsapp {
+  id                             Int       @id @default(autoincrement())
+  account_id                     Int
+  phone_number                   String
+  provider                       String    @default("default")
+  provider_config                Json      @default("{}")
+  created_at                     DateTime  @default(now())
+  updated_at                     DateTime  @updatedAt
+  message_templates              Json      @default("{}")
+  message_templates_last_updated DateTime?
+
+  @@unique([phone_number])
+}
+
+model channel_sms {
+  id              Int      @id @default(autoincrement())
+  account_id      Int
+  phone_number    String
+  provider        String   @default("default")
+  provider_config Json     @default("{}")
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@unique([phone_number])
+}
+
+model channel_twilio_sms {
+  id                             Int       @id @default(autoincrement())
+  phone_number                   String?
+  auth_token                     String
+  account_sid                    String
+  account_id                     Int
+  created_at                     DateTime  @default(now())
+  updated_at                     DateTime  @updatedAt
+  medium                         Int       @default(0)
+  messaging_service_sid          String?
+  api_key_sid                    String?
+  content_templates              Json      @default("{}")
+  content_templates_last_updated DateTime?
+
+  @@unique([account_sid, phone_number])
+  @@unique([messaging_service_sid])
+  @@unique([phone_number])
+}
+
+model channel_telegram {
+  id         Int      @id @default(autoincrement())
+  bot_name   String?
+  account_id Int
+  bot_token  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([bot_token])
+}
+
+model channel_line {
+  id                  Int      @id @default(autoincrement())
+  account_id          Int
+  line_channel_id     String
+  line_channel_secret String
+  line_channel_token  String
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@unique([line_channel_id])
+}
+
+model channel_instagram {
+  id           Int      @id @default(autoincrement())
+  access_token String
+  expires_at   DateTime
+  account_id   Int
+  instagram_id String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@unique([instagram_id])
+}
+
+model channel_tiktok {
+  id                       Int      @id @default(autoincrement())
+  account_id               Int
+  business_id              String
+  access_token             String
+  expires_at               DateTime
+  refresh_token            String
+  refresh_token_expires_at DateTime
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+
+  @@unique([business_id])
+}
+
+model channel_wechat_mp {
+  id                           Int      @id @default(autoincrement())
+  account_id                   Int
+  name                         String
+  app_id                       String   @unique
+  app_secret                   String
+  token                        String
+  encoding_aes_key             String?
+  account_type                 String   @default("service")
+  // 渠道能力：是否具备「客服消息」权限。
+  // 认证服务号 / 认证订阅号 = true；未认证（含个人订阅号、未认证企业订阅号）= false。
+  // 认证通过后只改这一项即可切回主动推送，不需要改代码或重新部署。
+  supports_active_reply        Boolean  @default(true)
+  // 无客服消息权限时启用「被动回复 + 积压队列」；supports_active_reply=false 时才有意义。
+  passive_reply_enabled        Boolean  @default(false)
+  // 被动回复菜单路由记录 TTL（秒）：发过 4 之后这段时间内的下一条消息按留言内容处理。
+  route_ttl_seconds            Int      @default(300)
+  // 待回复积压队列上限（条），超出丢弃最旧的。
+  pending_reply_max            Int      @default(20)
+  // 坐席回复超时（秒）：客户发言后的等待窗口内坐席没回出内容，就按「回复超时」处理
+  // ——把会话收回给 ITR 走超时流程。0 = 不启用。
+  // 「可主动推送」和「只能被动回复」两种渠道形态都有回复超时，区别只在挂哪个流程。
+  reply_timeout_seconds        Int      @default(0)
+  // 回复超时后要启动的 ITR 流程 id（0 = 不处理，维持现状）。
+  reply_timeout_flow_id        Int      @default(0)
+  // 第二级超时（秒）：等待这么久坐席仍未回，就把提示升级为「引导留言 / 按 9 转留言」。
+  // 0 = 不启用二级。只对能主动推送的形态有效 —— 被动回复只有客户发言后的一个窗口，
+  // 无法在 30 秒后主动联系客户（那条路径只能等客户下次发言带回）。
+  reply_timeout_level2_seconds Int      @default(0)
+  // 被动回复积压的存活时长（秒）：超过它的积压视为陈旧，取回时直接丢弃，
+  // 不再回给客户（避免把几小时前的内容当作「旧账」送出去，客户会莫名其妙）。
+  // 默认 300；0 = 不过期。
+  pending_ttl_seconds          Int      @default(300)
+  // 会话闲置回收（秒）：客户最后一次发言后这么久没有新消息，就把会话「回收」——
+  // 清掉坐席归属与 ITR 流程状态，下一条消息重新走 on_inbound 的路由（菜单/机器人/排队）。
+  //
+  // 为什么要它：机器人把会话停在菜单上等输入，客户不发 1/4 就永远出不来；
+  // 被动形态尤其明显（一次一问）。默认 300（5 分钟）；0 = 不回收。
+  idle_recycle_seconds         Int      @default(300)
+  created_at                   DateTime @default(now())
+  updated_at                   DateTime @updatedAt
+
+  @@index([account_id])
+}
+
+/// 一处候选路由：某渠道 + 某触发点 + 第 N 顺位 → 送往哪个目标。
+///
+/// 统一承接「进线 / ITR 决策 / ACD 结果 / 坐席超时 / 会话结束」各处的分发规则，
+/// 不再把路由信息散落在渠道字段、会话属性和流程里。
+/// 同一 (channel_id, trigger) 可配置多条，按 priority 升序依次尝试（失败降级）。
+model channel_route {
+  id              Int      @id @default(autoincrement())
+  /// 渠道类型：wechat_mp | wecom_kf | wecom_contact | telegram | email | …（Conf 键）
+  ///
+  /// 必须带上它：不同渠道表的 id 各自从 1 开始（channel_wechat_mp.id=1 与
+  /// channel_wecom_kf.id=1 同时存在），只用 channel_id 会互相串味。
+  channel_type    String   @default("wechat_mp")
+  /// 关联对应渠道表的 id（配合 channel_type 使用）
+  channel_id      Int
+  /// on_inbound | on_itr_route | on_acd_<结果码> | on_agent_no_answer
+  /// | on_agent_no_reply | on_agent_end
+  trigger         String
+  /// 同一触发点多条时的尝试顺序（升序）
+  priority        Int      @default(0)
+  /// itr | agent | robot | acd | none
+  app_type        String
+  /// app_type=itr 时使用
+  flow_id         Int      @default(0)
+  /// app_type=agent 时使用
+  agent_id        Int      @default(0)
+  /// app_type=robot 时使用
+  robot_id        Int      @default(0)
+  /// app_type=acd 时使用
+  agent_group_id  Int      @default(0)
+  skill_id        Int      @default(0)
+  media_type      Int      @default(0)
+  line_priority   Int      @default(0)
+  /// 可选覆盖：0 = 用渠道回复类型推导的默认时限
+  ///（主动回复 300s；被动回复按渠道，微信订阅号 5s）
+  timeout_seconds Int      @default(0)
+  enabled         Boolean  @default(true)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@index([channel_id, trigger, priority])
+}
+
+model channel_wecom_kf {
+  id               Int      @id @default(autoincrement())
+  account_id       Int
+  name             String
+  corp_id          String
+  secret           String
+  token            String
+  encoding_aes_key String?
+  open_kfid        String?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@index([account_id])
+  @@index([corp_id])
+}
+
+model channel_wecom_contact {
+  id               Int      @id @default(autoincrement())
+  account_id       Int
+  name             String
+  corp_id          String
+  contact_secret   String
+  token            String
+  encoding_aes_key String?
+  agent_id         Int?
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@index([account_id])
+  @@index([corp_id])
+}
+
+model channel_voice {
+  id                    Int      @id @default(autoincrement())
+  phone_number          String
+  provider              String   @default("twilio")
+  provider_config       Json
+  account_id            Int
+  additional_attributes Json     @default("{}")
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+
+  @@unique([phone_number])
+  @@index([account_id])
+}
+
+// ── Conversations & Messages ──
+
+model conversations {
+  id                     Int       @id @default(autoincrement())
+  account_id             Int
+  inbox_id               Int
+  status                 Int       @default(0)
+  assignee_id            Int?
+  created_at             DateTime  @default(now())
+  updated_at             DateTime  @updatedAt
+  contact_id             Int?
+  display_id             Int
+  contact_last_seen_at   DateTime?
+  agent_last_seen_at     DateTime?
+  additional_attributes  Json      @default("{}")
+  contact_inbox_id       Int?
+  uuid                   String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  identifier             String?
+  last_activity_at       DateTime  @default(now())
+  team_id                Int?
+  campaign_id            Int?
+  snoozed_until          DateTime?
+  custom_attributes      Json      @default("{}")
+  assignee_last_seen_at  DateTime?
+  first_reply_created_at DateTime?
+  priority               Int?
+  sla_policy_id          Int?
+  waiting_since          DateTime?
+  cached_label_list      String?
+  assignee_agent_bot_id  Int?
+
+  account              accounts                    @relation(fields: [account_id], references: [id])
+  inbox                inboxes                     @relation(fields: [inbox_id], references: [id])
+  assignee             users?                      @relation("Assignee", fields: [assignee_id], references: [id])
+  contact              contacts?                   @relation(fields: [contact_id], references: [id])
+  contact_inbox        contact_inboxes?            @relation(fields: [contact_inbox_id], references: [id])
+  team                 teams?                      @relation(fields: [team_id], references: [id])
+  campaign             campaigns?                  @relation(fields: [campaign_id], references: [id])
+  sla_policy           sla_policies?               @relation(fields: [sla_policy_id], references: [id])
+  messages             messages[]
+  participants         conversation_participants[]
+  mentions             mentions[]
+  csat_responses       csat_survey_responses[]
+  applied_slas         applied_slas[]
+  sla_events           sla_events[]
+  reporting_events     reporting_events[]
+  omni_session_records omni_session_records[]
+  omni_session_events  omni_session_events[]
+
+  @@unique([uuid])
+  @@unique([account_id, display_id])
+  @@index([account_id, inbox_id, status, assignee_id], map: "conv_acid_inbid_stat_asgnid_idx")
+  @@index([account_id])
+  @@index([assignee_id, account_id])
+  @@index([campaign_id])
+  @@index([contact_id])
+  @@index([contact_inbox_id])
+  @@index([first_reply_created_at])
+  @@index([identifier, account_id])
+  @@index([inbox_id])
+  @@index([priority])
+  @@index([status, account_id])
+  @@index([status, priority])
+  @@index([team_id])
+  @@index([waiting_since])
+}
+
+model messages {
+  id                        Int      @id @default(autoincrement())
+  content                   String?
+  account_id                Int
+  inbox_id                  Int
+  conversation_id           Int
+  message_type              Int
+  created_at                DateTime @default(now())
+  updated_at                DateTime @updatedAt
+  private                   Boolean  @default(false)
+  status                    Int      @default(0)
+  source_id                 String?
+  knowledge_trigger_id      Int?     @unique
+  content_type              Int      @default(0)
+  content_attributes        Json     @default("{}")
+  sender_type               String?
+  sender_id                 Int?
+  external_source_ids       Json     @default("{}")
+  additional_attributes     Json     @default("{}")
+  processed_message_content String?
+  sentiment                 Json     @default("{}")
+
+  account              accounts               @relation(fields: [account_id], references: [id])
+  inbox                inboxes                @relation(fields: [inbox_id], references: [id])
+  conversation         conversations          @relation(fields: [conversation_id], references: [id])
+  attachments          attachments[]
+  csat_survey_response csat_survey_responses?
+
+  @@index([account_id])
+  @@index([account_id, inbox_id])
+  @@index([conversation_id])
+  @@index([inbox_id])
+  @@index([source_id])
+  @@index([created_at])
+}
+
+model conversation_participants {
+  id              Int      @id @default(autoincrement())
+  account_id      Int
+  user_id         Int
+  conversation_id Int
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  account      accounts      @relation(fields: [account_id], references: [id])
+  user         users         @relation(fields: [user_id], references: [id])
+  conversation conversations @relation(fields: [conversation_id], references: [id])
+
+  @@unique([user_id, conversation_id])
+  @@index([account_id])
+  @@index([conversation_id])
+  @@index([user_id])
+}
+
+model attachments {
+  id               Int      @id @default(autoincrement())
+  file_type        Int      @default(0)
+  external_url     String?
+  coordinates_lat  Float    @default(0.0)
+  coordinates_long Float    @default(0.0)
+  message_id       Int
+  account_id       Int
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  fallback_title   String?
+  extension        String?
+  meta             Json     @default("{}")
+
+  message messages @relation(fields: [message_id], references: [id])
+
+  @@index([account_id])
+  @@index([message_id])
+}
+
+// ── Contacts & Companies ──
+
+model contacts {
+  id                    Int       @id @default(autoincrement())
+  name                  String    @default("")
+  email                 String?
+  phone_number          String?
+  account_id            Int
+  created_at            DateTime  @default(now())
+  updated_at            DateTime  @updatedAt
+  additional_attributes Json      @default("{}")
+  identifier            String?
+  custom_attributes     Json      @default("{}")
+  last_activity_at      DateTime?
+  contact_type          Int       @default(0)
+  middle_name           String    @default("")
+  last_name             String    @default("")
+  location              String    @default("")
+  country_code          String    @default("")
+  blocked               Boolean   @default(false)
+  company_id            Int?
+
+  account               accounts                @relation(fields: [account_id], references: [id])
+  company               companies?              @relation(fields: [company_id], references: [id])
+  contact_inboxes       contact_inboxes[]
+  conversations         conversations[]
+  csat_survey_responses csat_survey_responses[]
+  notes                 notes[]
+  contact_labels        contact_labels[]
+  opportunities         opportunities[]
+
+  @@unique([email, account_id], map: "uniq_email_per_account_contact")
+  @@unique([identifier, account_id], map: "uniq_identifier_per_account_contact")
+  @@index([account_id])
+  @@index([account_id, contact_type])
+  @@index([account_id, last_activity_at(sort: Desc)])
+  @@index([blocked])
+  @@index([company_id])
+  @@index([phone_number, account_id])
+}
+
+model companies {
+  id             Int      @id @default(autoincrement())
+  name           String
+  domain         String?
+  description    String?
+  account_id     Int
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  contacts_count Int?
+
+  account       accounts        @relation(fields: [account_id], references: [id])
+  contacts      contacts[]
+  opportunities opportunities[]
+
+  @@unique([account_id, domain], map: "index_companies_on_account_and_domain")
+  @@index([account_id])
+  @@index([name, account_id])
+}
+
+model contact_inboxes {
+  id            Int      @id @default(autoincrement())
+  contact_id    Int?
+  inbox_id      Int?
+  source_id     String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  hmac_verified Boolean  @default(false)
+  pubsub_token  String?
+
+  contact       contacts?       @relation(fields: [contact_id], references: [id])
+  inbox         inboxes?        @relation(fields: [inbox_id], references: [id])
+  conversations conversations[]
+
+  @@unique([inbox_id, source_id])
+  @@index([contact_id])
+  @@index([inbox_id])
+  @@index([pubsub_token])
+  @@index([source_id])
+}
+
+// ── Teams, Labels, Notes ──
+
+model teams {
+  id                Int      @id @default(autoincrement())
+  name              String
+  description       String?
+  allow_auto_assign Boolean  @default(true)
+  account_id        Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  account       accounts        @relation(fields: [account_id], references: [id])
+  team_members  team_members[]
+  conversations conversations[]
+
+  @@unique([name, account_id])
+  @@index([account_id])
+}
+
+model team_members {
+  id         Int      @id @default(autoincrement())
+  team_id    Int
+  user_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  team teams @relation(fields: [team_id], references: [id])
+  user users @relation(fields: [user_id], references: [id])
+
+  @@unique([team_id, user_id])
+  @@index([team_id])
+  @@index([user_id])
+}
+
+model labels {
+  id              Int      @id @default(autoincrement())
+  title           String?
+  description     String?
+  color           String   @default("#1f93ff")
+  show_on_sidebar Boolean?
+  account_id      Int?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  account        accounts?        @relation(fields: [account_id], references: [id])
+  contact_labels contact_labels[]
+
+  @@unique([title, account_id])
+  @@index([account_id])
+}
+
+/**
+ * CRM：联系人 ↔ 标签
+ */
+model contact_labels {
+  id         Int      @id @default(autoincrement())
+  contact_id Int
+  label_id   Int
+  created_at DateTime @default(now())
+
+  contact contacts @relation(fields: [contact_id], references: [id], onDelete: Cascade)
+  label   labels   @relation(fields: [label_id], references: [id], onDelete: Cascade)
+
+  @@unique([contact_id, label_id])
+  @@index([label_id])
+  @@index([contact_id])
+}
+
+/**
+ * CRM：商机
+ */
+model opportunities {
+  id                Int       @id @default(autoincrement())
+  account_id        Int
+  contact_id        Int?
+  company_id        Int?
+  title             String
+  stage             String    @default("new")
+  amount            Float?
+  currency          String    @default("CNY")
+  owner_id          Int?
+  expected_close    DateTime?
+  status            String    @default("open")
+  custom_attributes Json      @default("{}")
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  account accounts   @relation(fields: [account_id], references: [id])
+  contact contacts?  @relation(fields: [contact_id], references: [id], onDelete: SetNull)
+  company companies? @relation(fields: [company_id], references: [id], onDelete: SetNull)
+  owner   users?     @relation(fields: [owner_id], references: [id], onDelete: SetNull)
+
+  @@index([account_id, stage])
+  @@index([contact_id])
+  @@index([company_id])
+  @@index([owner_id])
+}
+
+model notes {
+  id         Int      @id @default(autoincrement())
+  content    String
+  account_id Int
+  contact_id Int
+  user_id    Int?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+  contact contacts @relation(fields: [contact_id], references: [id])
+  user    users?   @relation(fields: [user_id], references: [id])
+
+  @@index([account_id])
+  @@index([contact_id])
+  @@index([user_id])
+}
+
+// ── Automation & Macros ──
+
+model automation_rules {
+  id          Int      @id @default(autoincrement())
+  account_id  Int
+  name        String
+  description String?
+  event_name  String
+  conditions  Json     @default("{}")
+  actions     Json     @default("{}")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  active      Boolean  @default(true)
+
+  account accounts @relation(fields: [account_id], references: [id])
+
+  @@index([account_id])
+}
+
+model macros {
+  id            Int      @id @default(autoincrement())
+  account_id    Int
+  name          String
+  visibility    Int      @default(0)
+  created_by_id Int?
+  updated_by_id Int?
+  actions       Json     @default("{}")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  account    accounts @relation(fields: [account_id], references: [id])
+  created_by users?   @relation("CreatedBy", fields: [created_by_id], references: [id])
+  updated_by users?   @relation("UpdatedBy", fields: [updated_by_id], references: [id])
+
+  @@index([account_id])
+}
+
+model canned_responses {
+  id         Int      @id @default(autoincrement())
+  account_id Int
+  short_code String?
+  content    String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+/**
+ * 短信模板：班长（administrator）维护，坐席只能选用 approved 模板并填变量。
+ * 合规要点：正文与签名受控（对应运营商报备的完整模板），坐席不可自由改写；
+ * provider_template_id 为运营商报备返回的模板 ID，接入阿里云/腾讯云等正式网关时必填。
+ */
+model sms_templates {
+  id                   Int      @id @default(autoincrement())
+  account_id           Int
+  name                 String   @db.VarChar(120)
+  category             String   @default("notice") @db.VarChar(40)
+  signature            String   @default("") @db.VarChar(40)
+  body                 String   @db.Text
+  variables            Json     @default("[]")
+  provider             String?  @db.VarChar(40)
+  provider_template_id String?  @db.VarChar(120)
+  status               String   @default("draft") @db.VarChar(20)
+  created_by           Int?
+  updated_by           Int?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  @@index([account_id, status])
+  @@index([account_id, name])
+}
+
+// ── Notifications ──
+
+model notifications {
+  id                   Int       @id @default(autoincrement())
+  account_id           Int
+  user_id              Int
+  notification_type    Int
+  primary_actor_type   String
+  primary_actor_id     Int
+  secondary_actor_type String?
+  secondary_actor_id   Int?
+  read_at              DateTime?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+  snoozed_until        DateTime?
+  last_activity_at     DateTime  @default(now())
+  meta                 Json      @default("{}")
+
+  account accounts @relation(fields: [account_id], references: [id])
+  user    users    @relation(fields: [user_id], references: [id])
+
+  @@index([account_id])
+  @@index([user_id, account_id, snoozed_until, read_at], map: "idx_notifications_performance")
+  @@index([last_activity_at])
+}
+
+model notification_settings {
+  id          Int      @id @default(autoincrement())
+  account_id  Int?
+  user_id     Int?
+  email_flags Int      @default(0)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  push_flags  Int      @default(0)
+
+  @@unique([account_id, user_id], map: "by_account_user")
+}
+
+model notification_subscriptions {
+  id                      Int      @id @default(autoincrement())
+  user_id                 Int
+  subscription_type       Int
+  subscription_attributes Json     @default("{}")
+  created_at              DateTime @default(now())
+  updated_at              DateTime @updatedAt
+  identifier              String?
+
+  user users @relation(fields: [user_id], references: [id])
+
+  @@unique([identifier])
+  @@index([user_id])
+}
+
+// ── Campaigns ──
+
+model campaigns {
+  id                                 Int       @id @default(autoincrement())
+  display_id                         Int
+  title                              String
+  description                        String?
+  message                            String
+  sender_id                          Int?
+  enabled                            Boolean   @default(true)
+  account_id                         Int
+  inbox_id                           Int
+  trigger_rules                      Json      @default("{}")
+  created_at                         DateTime  @default(now())
+  updated_at                         DateTime  @updatedAt
+  campaign_type                      Int       @default(0)
+  campaign_status                    Int       @default(0)
+  audience                           Json      @default("[]")
+  scheduled_at                       DateTime?
+  trigger_only_during_business_hours Boolean   @default(false)
+  template_params                    Json?
+
+  account       accounts        @relation(fields: [account_id], references: [id])
+  inbox         inboxes         @relation(fields: [inbox_id], references: [id])
+  conversations conversations[]
+
+  @@index([account_id])
+  @@index([campaign_status])
+  @@index([campaign_type])
+  @@index([inbox_id])
+  @@index([scheduled_at])
+}
+
+// ── CSAT & SLA ──
+
+model csat_survey_responses {
+  id                         Int       @id @default(autoincrement())
+  account_id                 Int
+  conversation_id            Int
+  message_id                 Int
+  rating                     Int
+  feedback_message           String?
+  contact_id                 Int
+  assigned_agent_id          Int?
+  created_at                 DateTime  @default(now())
+  updated_at                 DateTime  @updatedAt
+  csat_review_notes          String?
+  review_notes_updated_at    DateTime?
+  review_notes_updated_by_id Int?
+
+  account        accounts      @relation(fields: [account_id], references: [id])
+  conversation   conversations @relation(fields: [conversation_id], references: [id])
+  message        messages      @relation(fields: [message_id], references: [id])
+  contact        contacts      @relation(fields: [contact_id], references: [id])
+  assigned_agent users?        @relation("AssignedAgent", fields: [assigned_agent_id], references: [id])
+
+  @@unique([message_id])
+  @@index([account_id])
+  @@index([assigned_agent_id])
+  @@index([contact_id])
+  @@index([conversation_id])
+}
+
+model sla_policies {
+  id                            Int      @id @default(autoincrement())
+  name                          String
+  first_response_time_threshold Float?
+  next_response_time_threshold  Float?
+  only_during_business_hours    Boolean  @default(false)
+  account_id                    Int
+  created_at                    DateTime @default(now())
+  updated_at                    DateTime @updatedAt
+  description                   String?
+  resolution_time_threshold     Float?
+
+  account       accounts        @relation(fields: [account_id], references: [id])
+  applied_slas  applied_slas[]
+  sla_events    sla_events[]
+  conversations conversations[]
+
+  @@index([account_id])
+}
+
+model applied_slas {
+  id              Int      @id @default(autoincrement())
+  account_id      Int
+  sla_policy_id   Int
+  conversation_id Int
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  sla_status      Int      @default(0)
+
+  account      accounts      @relation(fields: [account_id], references: [id])
+  sla_policy   sla_policies  @relation(fields: [sla_policy_id], references: [id])
+  conversation conversations @relation(fields: [conversation_id], references: [id])
+  sla_events   sla_events[]
+
+  @@unique([account_id, sla_policy_id, conversation_id], map: "index_applied_slas_on_account_sla_policy_conversation")
+  @@index([account_id])
+  @@index([conversation_id])
+  @@index([sla_policy_id])
+}
+
+model sla_events {
+  id              Int      @id @default(autoincrement())
+  applied_sla_id  Int
+  conversation_id Int
+  account_id      Int
+  sla_policy_id   Int
+  inbox_id        Int
+  event_type      Int?
+  meta            Json     @default("{}")
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  applied_sla  applied_slas  @relation(fields: [applied_sla_id], references: [id])
+  conversation conversations @relation(fields: [conversation_id], references: [id])
+  account      accounts      @relation(fields: [account_id], references: [id])
+  sla_policy   sla_policies  @relation(fields: [sla_policy_id], references: [id])
+  inbox        inboxes       @relation(fields: [inbox_id], references: [id])
+
+  @@index([account_id])
+  @@index([applied_sla_id])
+  @@index([conversation_id])
+  @@index([inbox_id])
+  @@index([sla_policy_id])
+}
+
+// ── Custom Attributes & Filters ──
+
+model custom_attribute_definitions {
+  id                     Int      @id @default(autoincrement())
+  attribute_display_name String?
+  attribute_key          String?
+  attribute_display_type Int      @default(0)
+  default_value          Int?
+  attribute_model        Int      @default(0)
+  account_id             Int?
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+  attribute_description  String?
+  attribute_values       Json     @default("[]")
+  regex_pattern          String?
+  regex_cue              String?
+
+  account accounts? @relation(fields: [account_id], references: [id])
+
+  @@unique([attribute_key, attribute_model, account_id], map: "attribute_key_model_index")
+  @@index([account_id])
+}
+
+model custom_filters {
+  id          Int      @id @default(autoincrement())
+  name        String
+  filter_type Int      @default(0)
+  query       Json     @default("{}")
+  account_id  Int
+  user_id     Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+  user    users    @relation(fields: [user_id], references: [id])
+
+  @@index([account_id])
+  @@index([user_id])
+}
+
+model custom_roles {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  description String?
+  account_id  Int
+  permissions String[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  account       accounts        @relation(fields: [account_id], references: [id])
+  account_users account_users[]
+
+  @@index([account_id])
+}
+
+// ── Portals (Help Center) ──
+
+model portals {
+  id                    Int      @id @default(autoincrement())
+  account_id            Int
+  name                  String
+  slug                  String
+  custom_domain         String?
+  color                 String?
+  homepage_link         String?
+  page_title            String?
+  header_text           String?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  config                Json     @default("{\"allowed_locales\": [\"en\"]}")
+  archived              Boolean  @default(false)
+  channel_web_widget_id Int?
+  ssl_settings          Json     @default("{}")
+
+  account    accounts     @relation(fields: [account_id], references: [id])
+  inboxes    inboxes[]
+  categories categories[]
+  articles   articles[]
+
+  @@unique([custom_domain])
+  @@unique([slug])
+}
+
+model categories {
+  id                     Int      @id @default(autoincrement())
+  account_id             Int
+  portal_id              Int
+  name                   String?
+  description            String?
+  position               Int?
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+  locale                 String   @default("en")
+  slug                   String
+  parent_category_id     Int?
+  associated_category_id Int?
+  icon                   String   @default("")
+
+  account accounts @relation(fields: [account_id], references: [id])
+  portal  portals  @relation(fields: [portal_id], references: [id])
+
+  @@unique([slug, locale, portal_id])
+  @@index([locale])
+  @@index([locale, account_id])
+}
+
+model articles {
+  id                    Int      @id @default(autoincrement())
+  account_id            Int
+  portal_id             Int
+  category_id           Int?
+  folder_id             Int?
+  title                 String?
+  description           String?
+  content               String?
+  status                Int?
+  views                 Int?
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  author_id             Int?
+  associated_article_id Int?
+  meta                  Json     @default("{}")
+  slug                  String
+  position              Int?
+  locale                String   @default("en")
+
+  account accounts @relation(fields: [account_id], references: [id])
+  portal  portals  @relation(fields: [portal_id], references: [id])
+
+  @@unique([slug])
+  @@index([account_id])
+  @@index([portal_id])
+  @@index([status])
+  @@index([views])
+}
+
+// ── Captain (AI Assistant) ──
+
+model captain_assistants {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  account_id          Int
+  description         String?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+  config              Json     @default("{}")
+  response_guidelines Json     @default("[]")
+  guardrails          Json     @default("[]")
+
+  account                     accounts                      @relation(fields: [account_id], references: [id])
+  captain_inboxes             captain_inboxes[]
+  captain_assistant_responses captain_assistant_responses[]
+  captain_documents           captain_documents[]
+  captain_scenarios           captain_scenarios[]
+
+  @@index([account_id])
+}
+
+model captain_inboxes {
+  id                   Int      @id @default(autoincrement())
+  captain_assistant_id Int
+  inbox_id             Int
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  captain_assistant captain_assistants @relation(fields: [captain_assistant_id], references: [id])
+  inbox             inboxes            @relation(fields: [inbox_id], references: [id])
+
+  @@unique([captain_assistant_id, inbox_id])
+  @@index([captain_assistant_id])
+  @@index([inbox_id])
+}
+
+model captain_assistant_responses {
+  id                Int                          @id @default(autoincrement())
+  question          String
+  answer            String
+  embedding         Unsupported("vector(1536)")?
+  assistant_id      Int
+  documentable_id   Int?
+  account_id        Int
+  created_at        DateTime                     @default(now())
+  updated_at        DateTime                     @updatedAt
+  status            Int                          @default(1)
+  documentable_type String?
+
+  account   accounts           @relation(fields: [account_id], references: [id])
+  assistant captain_assistants @relation(fields: [assistant_id], references: [id])
+
+  @@index([account_id])
+  @@index([assistant_id])
+  @@index([status])
+}
+
+model captain_documents {
+  id            Int      @id @default(autoincrement())
+  name          String?
+  external_link String
+  content       String?
+  assistant_id  Int
+  account_id    Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  status        Int      @default(0)
+  metadata      Json     @default("{}")
+
+  account   accounts           @relation(fields: [account_id], references: [id])
+  assistant captain_assistants @relation(fields: [assistant_id], references: [id])
+
+  @@unique([assistant_id, external_link])
+  @@index([account_id])
+  @@index([assistant_id])
+  @@index([status])
+}
+
+model captain_scenarios {
+  id           Int      @id @default(autoincrement())
+  title        String?
+  description  String?
+  instruction  String?
+  tools        Json     @default("[]")
+  enabled      Boolean  @default(true)
+  assistant_id Int
+  account_id   Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  account   accounts           @relation(fields: [account_id], references: [id])
+  assistant captain_assistants @relation(fields: [assistant_id], references: [id])
+
+  @@index([account_id])
+  @@index([assistant_id, enabled])
+  @@index([assistant_id])
+  @@index([enabled])
+}
+
+model captain_custom_tools {
+  id                Int      @id @default(autoincrement())
+  account_id        Int
+  slug              String
+  title             String
+  description       String?
+  http_method       String   @default("GET")
+  endpoint_url      String
+  request_template  String?
+  response_template String?
+  auth_type         String   @default("none")
+  auth_config       Json     @default("{}")
+  param_schema      Json     @default("[]")
+  enabled           Boolean  @default(true)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+
+  @@unique([account_id, slug])
+  @@index([account_id])
+}
+
+model copilot_threads {
+  id           Int      @id @default(autoincrement())
+  title        String
+  user_id      Int
+  account_id   Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  assistant_id Int?
+
+  account  accounts           @relation(fields: [account_id], references: [id])
+  user     users              @relation(fields: [user_id], references: [id])
+  messages copilot_messages[]
+
+  @@index([account_id])
+  @@index([assistant_id])
+  @@index([user_id])
+}
+
+model copilot_messages {
+  id                Int      @id @default(autoincrement())
+  copilot_thread_id Int
+  account_id        Int
+  message           Json     @default("{}")
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  message_type      Int      @default(0)
+
+  account accounts        @relation(fields: [account_id], references: [id])
+  thread  copilot_threads @relation(fields: [copilot_thread_id], references: [id])
+
+  @@index([account_id])
+  @@index([copilot_thread_id])
+}
+
+// ── Agents & Assignment ──
+
+model agent_capacity_policies {
+  id              Int      @id @default(autoincrement())
+  account_id      Int
+  name            String   @db.VarChar(255)
+  description     String?
+  exclusion_rules Json     @default("{}")
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  account               accounts                @relation(fields: [account_id], references: [id])
+  account_users         account_users[]
+  inbox_capacity_limits inbox_capacity_limits[]
+
+  @@index([account_id])
+}
+
+model inbox_capacity_limits {
+  id                       Int      @id @default(autoincrement())
+  agent_capacity_policy_id Int
+  inbox_id                 Int
+  conversation_limit       Int
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+
+  agent_capacity_policy agent_capacity_policies @relation(fields: [agent_capacity_policy_id], references: [id])
+  inbox                 inboxes                 @relation(fields: [inbox_id], references: [id])
+
+  @@unique([agent_capacity_policy_id, inbox_id])
+  @@index([agent_capacity_policy_id])
+  @@index([inbox_id])
+}
+
+model assignment_policies {
+  id                       Int      @id @default(autoincrement())
+  account_id               Int
+  name                     String   @db.VarChar(255)
+  description              String?
+  assignment_order         Int      @default(0)
+  conversation_priority    Int      @default(0)
+  fair_distribution_limit  Int      @default(100)
+  fair_distribution_window Int      @default(3600)
+  enabled                  Boolean  @default(true)
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+
+  account        accounts                    @relation(fields: [account_id], references: [id])
+  inbox_policies inbox_assignment_policies[]
+
+  @@unique([account_id, name])
+  @@index([account_id])
+  @@index([enabled])
+}
+
+model inbox_assignment_policies {
+  id                   Int      @id @default(autoincrement())
+  inbox_id             Int
+  assignment_policy_id Int
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+
+  inbox             inboxes             @relation(fields: [inbox_id], references: [id])
+  assignment_policy assignment_policies @relation(fields: [assignment_policy_id], references: [id])
+
+  @@unique([inbox_id])
+  @@index([assignment_policy_id])
+}
+
+// ── Integrations & Webhooks ──
+
+model integrations_hooks {
+  id           Int      @id @default(autoincrement())
+  status       Int      @default(1)
+  inbox_id     Int?
+  account_id   Int?
+  app_id       String?
+  hook_type    Int      @default(0)
+  reference_id String?
+  access_token String?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  settings     Json     @default("{}")
+
+  inbox inboxes? @relation(fields: [inbox_id], references: [id])
+}
+
+model webhooks {
+  id            Int      @id @default(autoincrement())
+  account_id    Int?
+  inbox_id      Int?
+  url           String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  webhook_type  Int      @default(0)
+  subscriptions Json     @default("[\"conversation_status_changed\", \"conversation_updated\", \"conversation_created\", \"contact_created\", \"contact_updated\", \"message_created\", \"message_updated\", \"webwidget_triggered\"]")
+  name          String?
+  secret        String?
+
+  account accounts? @relation(fields: [account_id], references: [id])
+  inbox   inboxes?  @relation(fields: [inbox_id], references: [id])
+
+  @@unique([account_id, url])
+}
+
+// ── Misc ──
+
+model mentions {
+  id              Int      @id @default(autoincrement())
+  user_id         Int
+  conversation_id Int
+  account_id      Int
+  mentioned_at    DateTime
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  account      accounts      @relation(fields: [account_id], references: [id])
+  user         users         @relation(fields: [user_id], references: [id])
+  conversation conversations @relation(fields: [conversation_id], references: [id])
+
+  @@unique([user_id, conversation_id])
+  @@index([account_id])
+  @@index([conversation_id])
+  @@index([user_id])
+}
+
+model reporting_events {
+  id                      Int       @id @default(autoincrement())
+  name                    String?
+  value                   Float?
+  account_id              Int?
+  inbox_id                Int?
+  user_id                 Int?
+  conversation_id         Int?
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
+  value_in_business_hours Float?
+  event_start_time        DateTime?
+  event_end_time          DateTime?
+
+  account      accounts?      @relation(fields: [account_id], references: [id])
+  inbox        inboxes?       @relation(fields: [inbox_id], references: [id])
+  conversation conversations? @relation(fields: [conversation_id], references: [id])
+
+  @@index([account_id, name, created_at], map: "reporting_events__account_id__name__created_at")
+  @@index([account_id])
+  @@index([conversation_id])
+  @@index([created_at])
+  @@index([inbox_id])
+  @@index([name])
+  @@index([user_id])
+}
+
+model reporting_events_rollups {
+  id                       Int      @id @default(autoincrement())
+  account_id               Int
+  date                     DateTime @db.Date
+  dimension_type           String
+  dimension_id             Int
+  metric                   String
+  count                    Int      @default(0)
+  sum_value                Float    @default(0)
+  sum_value_business_hours Float    @default(0)
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+
+  @@unique([account_id, date, dimension_type, dimension_id, metric], map: "index_rollup_unique_key")
+}
+
+model working_hours {
+  id             Int      @id @default(autoincrement())
+  inbox_id       Int?
+  account_id     Int?
+  day_of_week    Int
+  closed_all_day Boolean  @default(false)
+  open_hour      Int?
+  open_minutes   Int?
+  close_hour     Int?
+  close_minutes  Int?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  open_all_day   Boolean  @default(false)
+
+  account accounts? @relation(fields: [account_id], references: [id])
+  inbox   inboxes?  @relation(fields: [inbox_id], references: [id])
+
+  @@index([account_id])
+  @@index([inbox_id])
+}
+
+/// VDN 营业时间 —— IVR 检测工作时间的数据源（flow 里的 CheckWorkTime 节点读它）。
+///
+/// 与 inbox 级 working_hours 解耦：working_hours 决定 omni 客服界面的在线/离线，
+/// 本表决定 IVR 呼入走"营业中"（Next）还是"非营业"（OutTime）分支。
+///
+/// day_of_week: 0=周日 1=周一 ... 6=周六（与 working_hours 一致，前端可复用同一套 UI）
+/// 判定时区固定 Asia/Shanghai（PG 容器是 UTC，IVR 侧自行换算，不用 PG 的 now()）
+model conf_vdn_working_hours {
+  id             Int      @id @default(autoincrement())
+  vdn_id         Int
+  day_of_week    Int
+  closed_all_day Boolean  @default(false)
+  open_all_day   Boolean  @default(false)
+  open_hour      Int      @default(9)
+  open_minutes   Int      @default(0)
+  close_hour     Int      @default(18)
+  close_minutes  Int      @default(0)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  @@unique([vdn_id, day_of_week], name: "conf_vdn_working_hours_uniq")
+  @@index([vdn_id])
+}
+
+model dashboard_apps {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    Json     @default("[]")
+  account_id Int
+  user_id    Int?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+  user    users?   @relation(fields: [user_id], references: [id])
+
+  @@index([account_id])
+  @@index([user_id])
+}
+
+model data_imports {
+  id                Int      @id @default(autoincrement())
+  account_id        Int
+  data_type         String
+  status            Int      @default(0)
+  processing_errors String?
+  total_records     Int?
+  processed_records Int?
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  account accounts @relation(fields: [account_id], references: [id])
+
+  @@index([account_id])
+}
+
+model email_templates {
+  id            Int      @id @default(autoincrement())
+  name          String
+  body          String
+  account_id    Int?
+  template_type Int      @default(1)
+  locale        Int      @default(0)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  account accounts? @relation(fields: [account_id], references: [id])
+
+  @@unique([name, account_id])
+}
+
+model leaves {
+  id             Int       @id @default(autoincrement())
+  account_id     Int
+  user_id        Int
+  start_date     DateTime  @db.Date
+  end_date       DateTime  @db.Date
+  leave_type     Int       @default(0)
+  status         Int       @default(0)
+  reason         String?
+  approved_by_id Int?
+  approved_at    DateTime?
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+
+  account     accounts @relation(fields: [account_id], references: [id])
+  user        users    @relation(fields: [user_id], references: [id])
+  approved_by users?   @relation("ApprovedBy", fields: [approved_by_id], references: [id])
+
+  @@index([account_id, status])
+  @@index([account_id])
+  @@index([approved_by_id])
+  @@index([user_id])
+}
+
+model installation_configs {
+  id               Int      @id @default(autoincrement())
+  name             String
+  serialized_value Json     @default("{}")
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  locked           Boolean  @default(true)
+
+  @@unique([name, created_at])
+  @@unique([name])
+}
+
+model platform_apps {
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  permissibles platform_app_permissibles[]
+}
+
+model platform_app_permissibles {
+  id               Int      @id @default(autoincrement())
+  platform_app_id  Int
+  permissible_type String
+  permissible_id   Int
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  platform_app platform_apps @relation(fields: [platform_app_id], references: [id])
+
+  @@unique([platform_app_id, permissible_id, permissible_type], map: "unique_permissibles_index")
+  @@index([permissible_type, permissible_id], map: "index_platform_app_permissibles_on_permissibles")
+  @@index([platform_app_id])
+}
+
+model audits {
+  id              Int       @id @default(autoincrement())
+  auditable_id    Int?
+  auditable_type  String?
+  associated_id   Int?
+  associated_type String?
+  user_id         Int?
+  user_type       String?
+  username        String?
+  action          String?
+  audited_changes Json?
+  version         Int       @default(0)
+  comment         String?
+  remote_address  String?
+  request_uuid    String?
+  created_at      DateTime?
+
+  @@index([associated_type, associated_id], map: "associated_index")
+  @@index([auditable_type, auditable_id, version], map: "auditable_index")
+  @@index([created_at])
+  @@index([request_uuid])
+  @@index([user_id, user_type], map: "user_index")
+}
+
+model active_storage_blobs {
+  id           Int      @id @default(autoincrement())
+  key          String
+  filename     String
+  content_type String?
+  metadata     String?
+  byte_size    Int
+  checksum     String?
+  created_at   DateTime @default(now())
+  service_name String
+
+  attachments     active_storage_attachments[]
+  variant_records active_storage_variant_records[]
+
+  @@unique([key])
+}
+
+model active_storage_attachments {
+  id          Int      @id @default(autoincrement())
+  name        String
+  record_type String
+  record_id   Int
+  blob_id     Int
+  created_at  DateTime @default(now())
+
+  blob active_storage_blobs @relation(fields: [blob_id], references: [id])
+
+  @@unique([record_type, record_id, name, blob_id])
+  @@index([blob_id])
+}
+
+model active_storage_variant_records {
+  id               Int    @id @default(autoincrement())
+  blob_id          Int
+  variation_digest String
+
+  blob active_storage_blobs @relation(fields: [blob_id], references: [id])
+
+  @@unique([blob_id, variation_digest])
+}
+
+model action_mailbox_inbound_emails {
+  id               Int      @id @default(autoincrement())
+  status           Int      @default(0)
+  message_id       String
+  message_checksum String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@unique([message_id, message_checksum])
+}
+
+model folders {
+  id          Int      @id @default(autoincrement())
+  account_id  Int
+  category_id Int
+  name        String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model portals_members {
+  portal_id Int
+  user_id   Int
+
+  @@id([portal_id, user_id])
+  @@index([portal_id])
+  @@index([user_id])
+}
+
+model related_categories {
+  id                  Int      @id @default(autoincrement())
+  category_id         Int?
+  related_category_id Int?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  @@unique([category_id, related_category_id])
+  @@unique([related_category_id, category_id])
+}
+
+model tags {
+  id             Int     @id @default(autoincrement())
+  name           String?
+  taggings_count Int     @default(0)
+
+  taggings taggings[]
+
+  @@unique([name])
+}
+
+model taggings {
+  id            Int     @id @default(autoincrement())
+  tag_id        Int?
+  taggable_type String?
+  taggable_id   Int?
+  tagger_type   String?
+  tagger_id     Int?
+  context       String? @db.VarChar(128)
+
+  tag tags? @relation(fields: [tag_id], references: [id])
+
+  @@unique([tag_id, taggable_id, taggable_type, context, tagger_id, tagger_type], map: "taggings_idx")
+  @@index([context])
+  @@index([tag_id])
+  @@index([taggable_id, taggable_type, context])
+  @@index([taggable_id])
+  @@index([taggable_type])
+  @@index([tagger_id, tagger_type])
+  @@index([tagger_id])
+}
+
+model article_embeddings {
+  id         Int                          @id @default(autoincrement())
+  article_id Int
+  term       String
+  embedding  Unsupported("vector(1536)")?
+  created_at DateTime                     @default(now())
+  updated_at DateTime                     @updatedAt
+}
+
+model audit_logs {
+  id              Int      @id @default(autoincrement())
+  account_id      Int
+  user_id         Int?
+  auditable_type  String   @db.VarChar(255)
+  auditable_id    Int
+  action          String   @db.VarChar(255)
+  audited_changes Json     @default("{}")
+  associated_type String?  @db.VarChar(255)
+  associated_id   Int?
+  created_at      DateTime @default(now())
+
+  @@index([account_id])
+  @@index([user_id])
+  @@index([auditable_type, auditable_id])
+  @@index([associated_type, associated_id])
+  @@index([created_at])
+}
+
+model platform_configs {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique @db.VarChar(255)
+  value       String   @db.Text
+  category    String   @default("general") @db.VarChar(100)
+  description String?  @db.Text
+  encrypted   Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@index([category])
+}
+
+/**
+ * 个人看板 · 公告（Omni 本地）
+ */
+model agent_announcements {
+  id            Int                        @id @default(autoincrement())
+  account_id    Int?
+  title         String
+  type          String                     @default("system")
+  body          String?
+  published_at  DateTime                   @default(now())
+  created_at    DateTime                   @default(now())
+  updated_at    DateTime                   @updatedAt
+  reads         agent_announcement_reads[]
+  status        String                     @default("published")
+  audience_mode String                     @default("all")
+  recipient_ids Int[]                      @default([])
+  vdn_id        Int                        @default(1)
+  starts_at     DateTime                   @default(now())
+  ends_at       DateTime?
+  author_id     Int?
+
+  @@index([account_id, published_at])
+  @@index([account_id, vdn_id, status, starts_at], map: "announcement_visibility_idx")
+  @@index([recipient_ids], type: Gin, map: "announcement_recipients_idx")
+}
+
+model agent_announcement_groups {
+  id           Int      @id @default(autoincrement())
+  account_id   Int
+  vdn_id       Int
+  name         String   @db.VarChar(100)
+  operator_ids Int[]    @default([])
+  created_by   Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@unique([account_id, vdn_id, name])
+}
+
+/**
+ * 坐席对公告的已读记录，按人落库
+ */
+model agent_announcement_reads {
+  id              Int                 @id @default(autoincrement())
+  announcement_id Int
+  user_id         Int
+  read_at         DateTime            @default(now())
+  announcement    agent_announcements @relation(fields: [announcement_id], references: [id], onDelete: Cascade)
+
+  @@unique([announcement_id, user_id])
+  @@index([user_id])
+}
+
+/**
+ * 个人看板 · 工作备忘录
+ */
+model agent_memos {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  title      String
+  content    String?
+  due_at     DateTime?
+  done       Boolean   @default(false)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  user users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, due_at])
+  @@index([user_id, done])
+}
+
+/**
+ * 话务小休申请记录。
+ * 坐席视角：自己发起的申请；班长视角：自己审批过的申请。
+ */
+model agent_rest_requests {
+  id                 Int       @id @default(autoincrement())
+  applicant_user_id  Int
+  applicant_agent_id Int
+  applicant_work_no  String    @default("")
+  applicant_name     String    @default("")
+  leader_user_id     Int?
+  leader_agent_id    Int?
+  leader_work_no     String    @default("")
+  leader_name        String    @default("")
+  content            String    @default("")
+  /**
+   * pending | approved | rejected | self_approved
+   */
+  status             String    @default("pending")
+  requested_at       DateTime  @default(now())
+  approved_at        DateTime?
+  approve_opinion    String    @default("")
+  /**
+   * 申请/审批生效时长（秒）；0=不限时
+   */
+  duration_sec       Int       @default(0)
+  aux_code           Int       @default(0)
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+
+  applicant users  @relation("RestApplicant", fields: [applicant_user_id], references: [id], onDelete: Cascade)
+  leader    users? @relation("RestLeader", fields: [leader_user_id], references: [id], onDelete: SetNull)
+
+  @@index([applicant_user_id, requested_at])
+  @@index([applicant_agent_id, requested_at])
+  @@index([leader_user_id, approved_at])
+  @@index([leader_agent_id, approved_at])
+  @@index([status, requested_at])
+}
+
+/**
+ * 个人看板 · 备忘日历事件
+ */
+model agent_calendar_events {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  date       DateTime @db.Date
+  time       String   @default("")
+  location   String   @default("")
+  content    String   @default("")
+  note       String   @default("")
+  kinds      Json     @default("[]")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, date])
+}
+
+/**
+ * 坐席排班 · 排班板（按 account）
+ */
+model agent_shift_boards {
+  id              Int      @id @default(autoincrement())
+  account_id      Int
+  owner_id        Int
+  name            String   @default("默认排班")
+  rhythm          String   @default("3-2")
+  sequence        Json     @default("[\"day\",\"mid\",\"night\",\"off\"]")
+  start_date      DateTime @db.Date
+  duration        Int      @default(30)
+  need_per_shift  Int      @default(2)
+  time_day        String   @default("08:00-16:00")
+  time_mid        String   @default("16:00-00:00")
+  time_night      String   @default("00:00-08:00")
+  hours_per_shift Float    @default(8)
+  hourly_rate     Float    @default(30)
+  night_bonus     Float    @default(50)
+  theme           String   @default("blue")
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  owner   users                 @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  staff   agent_shift_staff[]
+  leaves  agent_shift_leaves[]
+  manuals agent_shift_manuals[]
+  notes   agent_shift_notes[]
+
+  @@index([account_id])
+  @@index([owner_id])
+}
+
+model agent_shift_staff {
+  id         Int      @id @default(autoincrement())
+  board_id   Int
+  name       String
+  sort_order Int      @default(0)
+  created_at DateTime @default(now())
+
+  board agent_shift_boards @relation(fields: [board_id], references: [id], onDelete: Cascade)
+
+  @@index([board_id])
+}
+
+model agent_shift_leaves {
+  id         Int      @id @default(autoincrement())
+  board_id   Int
+  staff_name String
+  from_date  DateTime @db.Date
+  to_date    DateTime @db.Date
+  type       String   @default("leave")
+  created_at DateTime @default(now())
+
+  board agent_shift_boards @relation(fields: [board_id], references: [id], onDelete: Cascade)
+
+  @@index([board_id])
+}
+
+model agent_shift_manuals {
+  id         Int      @id @default(autoincrement())
+  board_id   Int
+  staff_name String
+  date       DateTime @db.Date
+  shift      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  board agent_shift_boards @relation(fields: [board_id], references: [id], onDelete: Cascade)
+
+  @@unique([board_id, staff_name, date])
+  @@index([board_id])
+}
+
+model agent_shift_notes {
+  id         Int      @id @default(autoincrement())
+  board_id   Int
+  date       DateTime @db.Date
+  text       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  board agent_shift_boards @relation(fields: [board_id], references: [id], onDelete: Cascade)
+
+  @@unique([board_id, date])
+  @@index([board_id])
+}
+
+// ── ICC Integration Hub: voicemail read model (facts from ICC; is_read/assignee owned by Omni) ──
+
+model icc_voicemails {
+  id                   BigInt    @id @default(autoincrement())
+  source_event_subject String    @unique
+  vdn_id               Int
+  caller_number        String?
+  callee_number        String?
+  duration_sec         Int       @default(0)
+  audio_path           String?
+  transcription        String?
+  occurred_at          DateTime
+  is_read              Boolean   @default(false)
+  read_by_user_id      Int?
+  assignee_id          Int?
+  deleted_at           DateTime?
+  raw                  Json?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+
+  @@index([vdn_id, occurred_at(sort: Desc)])
+}
+
+/**
+ * Omni 全媒体会话单（对齐 CCS 话单，不写 ICC 话务表）
+ */
+model omni_session_records {
+  id                Int       @id @default(autoincrement())
+  conversation_id   Int
+  account_id        Int       @default(0)
+  inbox_id          Int       @default(0)
+  contact_id        Int?
+  channel           String    @default("media")
+  visitor_name      String    @default("")
+  visitor_id        String    @default("")
+  queued_at         DateTime?
+  assigned_at       DateTime?
+  answered_at       DateTime?
+  ended_at          DateTime?
+  wait_sec          Int       @default(0)
+  talk_sec          Int       @default(0)
+  skill_id          Int       @default(0)
+  skill_group_id    Int       @default(0)
+  skill_group_name  String    @default("")
+  vdn_id            Int       @default(0)
+  acd_request_id    Int       @default(0)
+  method            String    @default("inbound")
+  release_cause     String    @default("")
+  release_reason    String    @default("")
+  assignee_user_id  Int?
+  assignee_work_no  String    @default("")
+  assignee_agent_id Int       @default(0)
+  assignee_name     String    @default("")
+  extra             Json      @default("{}")
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  conversation conversations         @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
+  events       omni_session_events[]
+
+  @@index([conversation_id, created_at])
+  @@index([contact_id, created_at])
+  @@index([assignee_user_id, created_at])
+  @@index([account_id, created_at])
+  @@index([ended_at])
+}
+
+/**
+ * Omni 坐席/系统对会话的操作流水
+ */
+model omni_session_events {
+  id                Int      @id @default(autoincrement())
+  conversation_id   Int
+  session_record_id Int?
+  account_id        Int      @default(0)
+  event_type        String
+  actor_user_id     Int?
+  actor_work_no     String   @default("")
+  actor_agent_id    Int      @default(0)
+  actor_name        String   @default("")
+  target_user_id    Int?
+  target_work_no    String   @default("")
+  target_agent_id   Int      @default(0)
+  summary           String   @default("")
+  payload           Json     @default("{}")
+  created_at        DateTime @default(now())
+
+  conversation   conversations         @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
+  session_record omni_session_records? @relation(fields: [session_record_id], references: [id], onDelete: SetNull)
+
+  @@index([conversation_id, created_at])
+  @@index([session_record_id, created_at])
+  @@index([event_type, created_at])
+  @@index([actor_user_id, created_at])
+}
+
+// Knowledge and RAGFlow metadata. External IDs are opaque strings and are
+// intentionally kept separate from the provider's database schema.
+model knowledge_connections {
+  id                 String   @id @default(uuid())
+  account_id         Int
+  vdn_id             Int
+  provider           String
+  base_url           String
+  credential_ref     String
+  external_tenant_id String
+  state              String   @default("active")
+  contract_version   String
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  bindings knowledge_bindings[]
+
+  @@unique([account_id, vdn_id, provider])
+  @@index([account_id, vdn_id, state])
+}
+
+model knowledge_bases {
+  id                String   @id @default(uuid())
+  account_id        Int
+  vdn_id            Int
+  name              String
+  owner_user_id     Int
+  department_id     Int?
+  agent_group_ids   Json     @default("[]")
+  state             String   @default("active")
+  acl_revision      Int      @default(0)
+  active_generation Int      @default(1)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  bindings  knowledge_bindings[]
+  documents knowledge_documents[]
+  acl       knowledge_acl_entries[]
+
+  @@index([account_id, vdn_id, state])
+  @@index([owner_user_id])
+}
+
+model knowledge_bindings {
+  id                  String   @id @default(uuid())
+  base_id             String
+  connection_id       String
+  external_dataset_id String
+  generation          Int
+  parser_profile      Json     @default("{}")
+  embedding_model     String
+  config_hash         String
+  state               String   @default("active")
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  base       knowledge_bases               @relation(fields: [base_id], references: [id], onDelete: Cascade)
+  connection knowledge_connections         @relation(fields: [connection_id], references: [id], onDelete: Restrict)
+  versions   knowledge_document_versions[]
+
+  @@unique([connection_id, external_dataset_id])
+  @@unique([base_id, generation])
+  @@index([base_id, state])
+}
+
+model knowledge_documents {
+  id                String    @id @default(uuid())
+  account_id        Int
+  vdn_id            Int
+  base_id           String
+  source_type       String
+  source_id         String
+  title             String
+  category          String
+  tags              Json      @default("[]")
+  owner_user_id     Int
+  acl_mode          String    @default("inherit")
+  state             String    @default("draft")
+  active_version_id String?
+  audience          String    @default("internal")
+  valid_from        DateTime?
+  valid_to          DateTime?
+  deleted_at        DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  base     knowledge_bases               @relation(fields: [base_id], references: [id], onDelete: Cascade)
+  versions knowledge_document_versions[]
+  acl      knowledge_acl_entries[]
+
+  @@unique([account_id, vdn_id, source_type, source_id])
+  @@index([account_id, vdn_id, state, audience, valid_to])
+  @@index([base_id, state])
+}
+
+model knowledge_document_versions {
+  id                   String    @id @default(uuid())
+  document_id          String
+  version_no           Int
+  binding_id           String
+  external_document_id String?
+  content_sha256       String
+  object_key           String?
+  inline_content       String?
+  parser_config_hash   String
+  index_state          String    @default("pending")
+  review_state         String    @default("draft")
+  chunk_count          Int       @default(0)
+  error_code           String?
+  created_by           Int
+  reviewed_by          Int?
+  reviewed_at          DateTime?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+
+  document knowledge_documents @relation(fields: [document_id], references: [id], onDelete: Cascade)
+  binding  knowledge_bindings  @relation(fields: [binding_id], references: [id], onDelete: Restrict)
+
+  @@unique([document_id, version_no])
+  @@unique([binding_id, external_document_id])
+  @@index([document_id, index_state, review_state])
+}
+
+model knowledge_acl_entries {
+  id           String   @id @default(uuid())
+  account_id   Int
+  vdn_id       Int
+  base_id      String
+  document_id  String?
+  capability   String
+  subject_type String
+  subject_id   String
+  created_at   DateTime @default(now())
+
+  base     knowledge_bases      @relation(fields: [base_id], references: [id], onDelete: Cascade)
+  document knowledge_documents? @relation(fields: [document_id], references: [id], onDelete: Cascade)
+
+  @@unique([account_id, vdn_id, base_id, document_id, capability, subject_type, subject_id])
+  @@index([account_id, vdn_id, capability, subject_type, subject_id])
+}
+
+model knowledge_sync_jobs {
+  id                   String    @id @default(uuid())
+  account_id           Int
+  vdn_id               Int
+  operation            String
+  document_id          String?
+  version_id           String?
+  binding_id           String?
+  dedupe_key           String
+  state                String    @default("queued")
+  attempts             Int       @default(0)
+  next_run_at          DateTime  @default(now())
+  locked_until         DateTime?
+  external_request_key String?
+  actor_user_id        Int?
+  actor_kind           String    @default("user")
+  payload              Json      @default("{}")
+  result_object_key    String?
+  last_error           String?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+
+  @@unique([account_id, vdn_id, dedupe_key])
+  @@index([state, next_run_at])
+  @@index([account_id, vdn_id, document_id])
+}
+
+model knowledge_audit_events {
+  id                String   @id @default(uuid())
+  account_id        Int
+  vdn_id            Int
+  actor_kind        String
+  actor_id          String?
+  action            String
+  resource_id       String
+  previous_revision Int?
+  next_revision     Int?
+  request_id        String
+  outcome           String
+  created_at        DateTime @default(now())
+
+  @@index([account_id, vdn_id, resource_id, created_at])
+  @@index([request_id])
+}
+
+// ConfManager owns these identity projections; WorkNO/email are not global keys.
+model conf_vdn_accounts {
+  vdn_id     Int      @id
+  account_id Int      @unique
+  enabled    Boolean  @default(true)
+  updated_at DateTime @updatedAt
+}
+
+model conf_user_bindings {
+  id             Int      @id @default(autoincrement())
+  vdn_id         Int
+  source_user_id Int
+  user_id        Int      @unique
+  work_no        String
+  enabled        Boolean  @default(true)
+  updated_at     DateTime @updatedAt
+
+  @@unique([vdn_id, source_user_id])
+  @@unique([vdn_id, work_no])
+}
+
+model social_organizations {
+  id            String                            @id @default(uuid())
+  code          String                            @unique @db.VarChar(64)
+  account_id    Int                               @unique
+  vdn_id        Int                               @unique
+  enabled       Boolean                           @default(false)
+  created_at    DateTime                          @default(now())
+  updated_at    DateTime                          @updatedAt
+  account       accounts                          @relation(fields: [account_id], references: [id], onDelete: Restrict)
+  installations social_enterprise_installations[]
+  identities    social_user_identities[]
+}
+
+model social_provider_apps {
+  id                    String                            @id @default(uuid())
+  provider              String                            @db.VarChar(24)
+  client_id             String                            @db.VarChar(256)
+  enabled               Boolean                           @default(false)
+  approved_platforms    Json                              @default("[]")
+  verified_platforms    Json                              @default("[]")
+  native_metadata       Json                              @default("{}")
+  encrypted_credentials String
+  credential_key_id     String                            @db.VarChar(40)
+  created_at            DateTime                          @default(now())
+  updated_at            DateTime                          @updatedAt
+  installations         social_enterprise_installations[]
+  identities            social_user_identities[]
+
+  @@unique([provider, client_id])
+}
+
+model social_enterprise_installations {
+  id                       String               @id @default(uuid())
+  app_id                   String
+  organization_id          String
+  provider                 String               @db.VarChar(24)
+  external_organization_id String               @db.VarChar(256)
+  status                   String               @default("pending") @db.VarChar(24)
+  encrypted_credentials    String?
+  credential_key_id        String?              @db.VarChar(40)
+  expires_at               DateTime?
+  revoked_at               DateTime?
+  authorization_revision   Int                  @default(1)
+  created_at               DateTime             @default(now())
+  updated_at               DateTime             @updatedAt
+  app                      social_provider_apps @relation(fields: [app_id], references: [id], onDelete: Restrict)
+  organization             social_organizations @relation(fields: [organization_id], references: [id], onDelete: Restrict)
+
+  @@unique([app_id, organization_id])
+  @@index([app_id, external_organization_id], map: "social_installation_app_external_org_idx")
+}
+
+model social_user_identities {
+  id                       String               @id @default(uuid())
+  app_id                   String
+  organization_id          String
+  external_organization_id String               @db.VarChar(256)
+  subject_id               String               @db.VarChar(256)
+  user_id                  Int
+  enabled                  Boolean              @default(true)
+  created_at               DateTime             @default(now())
+  updated_at               DateTime             @updatedAt
+  app                      social_provider_apps @relation(fields: [app_id], references: [id], onDelete: Restrict)
+  organization             social_organizations @relation(fields: [organization_id], references: [id], onDelete: Restrict)
+  user                     users                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([app_id, external_organization_id, subject_id])
+  @@index([organization_id, user_id])
+}
+
+model social_authorization_events {
+  id                String    @id @default(uuid())
+  provider          String    @db.VarChar(24)
+  app_id            String
+  organization_id   String?
+  external_event_id String    @db.VarChar(256)
+  event_type        String    @db.VarChar(64)
+  payload_digest    String    @db.VarChar(64)
+  received_at       DateTime  @default(now())
+  processed_at      DateTime?
+
+  @@unique([provider, app_id, external_event_id])
+}

@@ -1,0 +1,1546 @@
+[
+  {
+    "value": 100,
+    "code": "conversation.read",
+    "name": "全媒体会话：查看",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 101,
+    "code": "conversation.create",
+    "name": "全媒体会话：新增",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "create",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 102,
+    "code": "conversation.reply",
+    "name": "全媒体会话：回复",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "reply",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 103,
+    "code": "conversation.update",
+    "name": "全媒体会话：修改",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 104,
+    "code": "conversation.transfer",
+    "name": "全媒体会话：转接",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "transfer",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 105,
+    "code": "conversation.close",
+    "name": "全媒体会话：结束",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "close",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 106,
+    "code": "conversation.delete",
+    "name": "全媒体会话：删除",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "delete",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 107,
+    "code": "conversation.export",
+    "name": "全媒体会话：导出",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "export",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 108,
+    "code": "conversation.recording",
+    "name": "全媒体会话：录音访问",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "recording",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 109,
+    "code": "conversation.ai",
+    "name": "全媒体会话：AI 辅助",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "ai",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 110,
+    "code": "conversation.snatch",
+    "name": "全媒体会话：抢接",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "snatch",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 111,
+    "code": "conversation.queue",
+    "name": "全媒体会话：排队取回",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "queue",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 112,
+    "code": "conversation.conference",
+    "name": "全媒体会话：会议",
+    "module": "conversation",
+    "moduleName": "全媒体会话",
+    "operation": "conference",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 120,
+    "code": "customer.read",
+    "name": "客户：查看",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 121,
+    "code": "customer.create",
+    "name": "客户：新增",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "create",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 122,
+    "code": "customer.update",
+    "name": "客户：修改",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 123,
+    "code": "customer.delete",
+    "name": "客户：删除",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "delete",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 124,
+    "code": "customer.import",
+    "name": "客户：导入",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "import",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 125,
+    "code": "customer.export",
+    "name": "客户：导出",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "export",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 126,
+    "code": "customer.merge",
+    "name": "客户：合并",
+    "module": "customer",
+    "moduleName": "客户",
+    "operation": "merge",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 140,
+    "code": "company.read",
+    "name": "企业：查看",
+    "module": "company",
+    "moduleName": "企业",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 141,
+    "code": "company.create",
+    "name": "企业：新增",
+    "module": "company",
+    "moduleName": "企业",
+    "operation": "create",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 142,
+    "code": "company.update",
+    "name": "企业：修改",
+    "module": "company",
+    "moduleName": "企业",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 143,
+    "code": "company.delete",
+    "name": "企业：删除",
+    "module": "company",
+    "moduleName": "企业",
+    "operation": "delete",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 150,
+    "code": "opportunity.read",
+    "name": "商机：查看",
+    "module": "opportunity",
+    "moduleName": "商机",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 151,
+    "code": "opportunity.create",
+    "name": "商机：新增",
+    "module": "opportunity",
+    "moduleName": "商机",
+    "operation": "create",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 152,
+    "code": "opportunity.update",
+    "name": "商机：修改",
+    "module": "opportunity",
+    "moduleName": "商机",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 153,
+    "code": "opportunity.delete",
+    "name": "商机：删除",
+    "module": "opportunity",
+    "moduleName": "商机",
+    "operation": "delete",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 160,
+    "code": "voicemail.read",
+    "name": "留言：查看",
+    "module": "voicemail",
+    "moduleName": "留言",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 161,
+    "code": "voicemail.update",
+    "name": "留言：修改",
+    "module": "voicemail",
+    "moduleName": "留言",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 162,
+    "code": "voicemail.delete",
+    "name": "留言：删除",
+    "module": "voicemail",
+    "moduleName": "留言",
+    "operation": "delete",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 163,
+    "code": "voicemail.claim",
+    "name": "留言：认领",
+    "module": "voicemail",
+    "moduleName": "留言",
+    "operation": "claim",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 164,
+    "code": "voicemail.recording",
+    "name": "留言：录音访问",
+    "module": "voicemail",
+    "moduleName": "留言",
+    "operation": "recording",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 180,
+    "code": "outbound.read",
+    "name": "智能外呼：查看",
+    "module": "outbound",
+    "moduleName": "智能外呼",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 181,
+    "code": "outbound.create",
+    "name": "智能外呼：新增",
+    "module": "outbound",
+    "moduleName": "智能外呼",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 182,
+    "code": "outbound.update",
+    "name": "智能外呼：修改",
+    "module": "outbound",
+    "moduleName": "智能外呼",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 183,
+    "code": "outbound.delete",
+    "name": "智能外呼：删除",
+    "module": "outbound",
+    "moduleName": "智能外呼",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 184,
+    "code": "outbound.execute",
+    "name": "智能外呼：执行",
+    "module": "outbound",
+    "moduleName": "智能外呼",
+    "operation": "execute",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 185,
+    "code": "outbound.export",
+    "name": "智能外呼：导出",
+    "module": "outbound",
+    "moduleName": "智能外呼",
+    "operation": "export",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 200,
+    "code": "inspection.read",
+    "name": "智能质检：查看",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 201,
+    "code": "inspection.create",
+    "name": "智能质检：新增",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 202,
+    "code": "inspection.update",
+    "name": "智能质检：修改",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 203,
+    "code": "inspection.delete",
+    "name": "智能质检：删除",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 204,
+    "code": "inspection.review",
+    "name": "智能质检：复核",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "review",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 205,
+    "code": "inspection.appeal",
+    "name": "智能质检：申诉",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "appeal",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 206,
+    "code": "inspection.resolve",
+    "name": "智能质检：裁决",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "resolve",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 207,
+    "code": "inspection.publish",
+    "name": "智能质检：发布",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "publish",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 208,
+    "code": "inspection.export",
+    "name": "智能质检：导出",
+    "module": "inspection",
+    "moduleName": "智能质检",
+    "operation": "export",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 220,
+    "code": "report.read",
+    "name": "报表与绩效：查看",
+    "module": "report",
+    "moduleName": "报表与绩效",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 221,
+    "code": "report.export",
+    "name": "报表与绩效：导出",
+    "module": "report",
+    "moduleName": "报表与绩效",
+    "operation": "export",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 222,
+    "code": "report.update",
+    "name": "报表与绩效：修改",
+    "module": "report",
+    "moduleName": "报表与绩效",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 230,
+    "code": "monitor.read",
+    "name": "坐席监控：查看",
+    "module": "monitor",
+    "moduleName": "坐席监控",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 231,
+    "code": "monitor.update",
+    "name": "坐席监控：修改",
+    "module": "monitor",
+    "moduleName": "坐席监控",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 232,
+    "code": "monitor.intervene",
+    "name": "坐席监控：介入",
+    "module": "monitor",
+    "moduleName": "坐席监控",
+    "operation": "intervene",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 233,
+    "code": "monitor.force",
+    "name": "坐席监控：强制签入签出",
+    "module": "monitor",
+    "moduleName": "坐席监控",
+    "operation": "force",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 240,
+    "code": "channel.read",
+    "name": "渠道与工作时间：查看",
+    "module": "channel",
+    "moduleName": "渠道与工作时间",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 241,
+    "code": "channel.create",
+    "name": "渠道与工作时间：新增",
+    "module": "channel",
+    "moduleName": "渠道与工作时间",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 242,
+    "code": "channel.update",
+    "name": "渠道与工作时间：修改",
+    "module": "channel",
+    "moduleName": "渠道与工作时间",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 243,
+    "code": "channel.delete",
+    "name": "渠道与工作时间：删除",
+    "module": "channel",
+    "moduleName": "渠道与工作时间",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 244,
+    "code": "channel.execute",
+    "name": "渠道与工作时间：执行",
+    "module": "channel",
+    "moduleName": "渠道与工作时间",
+    "operation": "execute",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 260,
+    "code": "sms.read",
+    "name": "短信与模板：查看",
+    "module": "sms",
+    "moduleName": "短信与模板",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 261,
+    "code": "sms.create",
+    "name": "短信与模板：新增",
+    "module": "sms",
+    "moduleName": "短信与模板",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 262,
+    "code": "sms.update",
+    "name": "短信与模板：修改",
+    "module": "sms",
+    "moduleName": "短信与模板",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 263,
+    "code": "sms.delete",
+    "name": "短信与模板：删除",
+    "module": "sms",
+    "moduleName": "短信与模板",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 264,
+    "code": "sms.send",
+    "name": "短信与模板：发送",
+    "module": "sms",
+    "moduleName": "短信与模板",
+    "operation": "send",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 270,
+    "code": "email.read",
+    "name": "邮件：查看",
+    "module": "email",
+    "moduleName": "邮件",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 271,
+    "code": "email.send",
+    "name": "邮件：发送",
+    "module": "email",
+    "moduleName": "邮件",
+    "operation": "send",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 280,
+    "code": "knowledge.read",
+    "name": "知识库：查看",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "read",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 281,
+    "code": "knowledge.create",
+    "name": "知识库：新增",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "create",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 282,
+    "code": "knowledge.update",
+    "name": "知识库：修改",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "update",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 283,
+    "code": "knowledge.delete",
+    "name": "知识库：删除",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "delete",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 284,
+    "code": "knowledge.publish",
+    "name": "知识库：发布",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "publish",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 285,
+    "code": "knowledge.grant",
+    "name": "知识库：授予范围",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "grant",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 286,
+    "code": "knowledge.download",
+    "name": "知识库：下载原件",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "download",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 287,
+    "code": "knowledge.reindex",
+    "name": "知识库：重建索引",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "reindex",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 288,
+    "code": "knowledge.export",
+    "name": "知识库：导出",
+    "module": "knowledge",
+    "moduleName": "知识库",
+    "operation": "export",
+    "scopes": [
+      "self",
+      "group",
+      "department",
+      "account"
+    ]
+  },
+  {
+    "value": 300,
+    "code": "ai.read",
+    "name": "AI 助手：查看",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 301,
+    "code": "ai.create",
+    "name": "AI 助手：新增",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 302,
+    "code": "ai.update",
+    "name": "AI 助手：修改",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 303,
+    "code": "ai.delete",
+    "name": "AI 助手：删除",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 304,
+    "code": "ai.execute",
+    "name": "AI 助手：执行",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "execute",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 305,
+    "code": "ai.autoreply",
+    "name": "AI 助手：启停自动回复",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "autoreply",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 306,
+    "code": "ai.configure",
+    "name": "AI 助手：模型连接配置",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "configure",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 307,
+    "code": "ai.audit",
+    "name": "AI 助手：使用审计",
+    "module": "ai",
+    "moduleName": "AI 助手",
+    "operation": "audit",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 320,
+    "code": "automation.read",
+    "name": "自动化与宏：查看",
+    "module": "automation",
+    "moduleName": "自动化与宏",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 321,
+    "code": "automation.create",
+    "name": "自动化与宏：新增",
+    "module": "automation",
+    "moduleName": "自动化与宏",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 322,
+    "code": "automation.update",
+    "name": "自动化与宏：修改",
+    "module": "automation",
+    "moduleName": "自动化与宏",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 323,
+    "code": "automation.delete",
+    "name": "自动化与宏：删除",
+    "module": "automation",
+    "moduleName": "自动化与宏",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 324,
+    "code": "automation.execute",
+    "name": "自动化与宏：执行",
+    "module": "automation",
+    "moduleName": "自动化与宏",
+    "operation": "execute",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 340,
+    "code": "campaign.read",
+    "name": "营销活动：查看",
+    "module": "campaign",
+    "moduleName": "营销活动",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 341,
+    "code": "campaign.create",
+    "name": "营销活动：新增",
+    "module": "campaign",
+    "moduleName": "营销活动",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 342,
+    "code": "campaign.update",
+    "name": "营销活动：修改",
+    "module": "campaign",
+    "moduleName": "营销活动",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 343,
+    "code": "campaign.delete",
+    "name": "营销活动：删除",
+    "module": "campaign",
+    "moduleName": "营销活动",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 344,
+    "code": "campaign.execute",
+    "name": "营销活动：执行",
+    "module": "campaign",
+    "moduleName": "营销活动",
+    "operation": "execute",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 360,
+    "code": "integration.read",
+    "name": "应用集成：查看",
+    "module": "integration",
+    "moduleName": "应用集成",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 361,
+    "code": "integration.create",
+    "name": "应用集成：新增",
+    "module": "integration",
+    "moduleName": "应用集成",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 362,
+    "code": "integration.update",
+    "name": "应用集成：修改",
+    "module": "integration",
+    "moduleName": "应用集成",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 363,
+    "code": "integration.delete",
+    "name": "应用集成：删除",
+    "module": "integration",
+    "moduleName": "应用集成",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 364,
+    "code": "integration.execute",
+    "name": "应用集成：执行",
+    "module": "integration",
+    "moduleName": "应用集成",
+    "operation": "execute",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 380,
+    "code": "settings.read",
+    "name": "平台配置：查看",
+    "module": "settings",
+    "moduleName": "平台配置",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 381,
+    "code": "settings.create",
+    "name": "平台配置：新增",
+    "module": "settings",
+    "moduleName": "平台配置",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 382,
+    "code": "settings.update",
+    "name": "平台配置：修改",
+    "module": "settings",
+    "moduleName": "平台配置",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 383,
+    "code": "settings.delete",
+    "name": "平台配置：删除",
+    "module": "settings",
+    "moduleName": "平台配置",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 400,
+    "code": "organization.read",
+    "name": "组织与坐席配置：查看",
+    "module": "organization",
+    "moduleName": "组织与坐席配置",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 401,
+    "code": "organization.create",
+    "name": "组织与坐席配置：新增",
+    "module": "organization",
+    "moduleName": "组织与坐席配置",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 402,
+    "code": "organization.update",
+    "name": "组织与坐席配置：修改",
+    "module": "organization",
+    "moduleName": "组织与坐席配置",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 403,
+    "code": "organization.delete",
+    "name": "组织与坐席配置：删除",
+    "module": "organization",
+    "moduleName": "组织与坐席配置",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 420,
+    "code": "schedule.read",
+    "name": "排班与小休审批：查看",
+    "module": "schedule",
+    "moduleName": "排班与小休审批",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 421,
+    "code": "schedule.create",
+    "name": "排班与小休审批：新增",
+    "module": "schedule",
+    "moduleName": "排班与小休审批",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 422,
+    "code": "schedule.update",
+    "name": "排班与小休审批：修改",
+    "module": "schedule",
+    "moduleName": "排班与小休审批",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 423,
+    "code": "schedule.delete",
+    "name": "排班与小休审批：删除",
+    "module": "schedule",
+    "moduleName": "排班与小休审批",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 424,
+    "code": "schedule.export",
+    "name": "排班与小休审批：导出",
+    "module": "schedule",
+    "moduleName": "排班与小休审批",
+    "operation": "export",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 425,
+    "code": "schedule.approve",
+    "name": "排班与小休审批：审批",
+    "module": "schedule",
+    "moduleName": "排班与小休审批",
+    "operation": "approve",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 440,
+    "code": "announcement.read",
+    "name": "公告：查看",
+    "module": "announcement",
+    "moduleName": "公告",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 441,
+    "code": "announcement.create",
+    "name": "公告：新增",
+    "module": "announcement",
+    "moduleName": "公告",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 442,
+    "code": "announcement.update",
+    "name": "公告：修改",
+    "module": "announcement",
+    "moduleName": "公告",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 443,
+    "code": "announcement.delete",
+    "name": "公告：删除",
+    "module": "announcement",
+    "moduleName": "公告",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 460,
+    "code": "efficiency.read",
+    "name": "标签与快捷回复：查看",
+    "module": "efficiency",
+    "moduleName": "标签与快捷回复",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 461,
+    "code": "efficiency.create",
+    "name": "标签与快捷回复：新增",
+    "module": "efficiency",
+    "moduleName": "标签与快捷回复",
+    "operation": "create",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 462,
+    "code": "efficiency.update",
+    "name": "标签与快捷回复：修改",
+    "module": "efficiency",
+    "moduleName": "标签与快捷回复",
+    "operation": "update",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 463,
+    "code": "efficiency.delete",
+    "name": "标签与快捷回复：删除",
+    "module": "efficiency",
+    "moduleName": "标签与快捷回复",
+    "operation": "delete",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 480,
+    "code": "audit.read",
+    "name": "审计日志：查看",
+    "module": "audit",
+    "moduleName": "审计日志",
+    "operation": "read",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 481,
+    "code": "audit.export",
+    "name": "审计日志：导出",
+    "module": "audit",
+    "moduleName": "审计日志",
+    "operation": "export",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 500,
+    "code": "extension.bind_self",
+    "name": "分机绑定：本人直接绑定",
+    "module": "extension",
+    "moduleName": "分机绑定",
+    "operation": "bind_self",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 501,
+    "code": "extension.unbind_self",
+    "name": "分机绑定：本人直接解绑",
+    "module": "extension",
+    "moduleName": "分机绑定",
+    "operation": "unbind_self",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 502,
+    "code": "extension.assign",
+    "name": "分机绑定：分配",
+    "module": "extension",
+    "moduleName": "分机绑定",
+    "operation": "assign",
+    "scopes": [
+      "account"
+    ]
+  },
+  {
+    "value": 503,
+    "code": "extension.approve",
+    "name": "分机绑定：审批",
+    "module": "extension",
+    "moduleName": "分机绑定",
+    "operation": "approve",
+    "scopes": [
+      "account"
+    ]
+  }
+]

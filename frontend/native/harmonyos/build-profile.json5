@@ -1,0 +1,71 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:/Users/dream/.ohos/config/default_harmonyos_1O6mZPWofSAlovASM9mh2dZ8CPxJVOBmVJi1SIX2k_k=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BEA5EB2AE31A0ACE3A2E855ACBA524C6EBE1B308DF2F267F27F314EC465AA43AB4671E594D125B8",
+          "profile": "C:/Users/dream/.ohos/config/default_harmonyos_1O6mZPWofSAlovASM9mh2dZ8CPxJVOBmVJi1SIX2k_k=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:/Users/dream/.ohos/config/default_harmonyos_1O6mZPWofSAlovASM9mh2dZ8CPxJVOBmVJi1SIX2k_k=.p12",
+          "storePassword": "0000001B5F64CFA6CEE158B4298DE3EF1F764E9D25700BE3026D8F9D509EE9125F79F3A7ACE3547698A5DA"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "6.0.1(21)",
+        "targetSdkVersion": "6.0.1(21)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ],
+    "capabilities": [
+      {
+        "bundleName": "com.smcloud.omniagent",
+        "config": [
+          {
+            "name": "Push Kit",
+            "capability": "com.huawei.service.push.base_service"
+          },
+          {
+            "name": "Device status detection",
+            "capability": "com.huawei.service.device_security.device_verify"
+          },
+          {
+            "name": "Map Kit",
+            "capability": "com.huawei.service.mapkit"
+          },
+          {
+            "name": "Safety Detect",
+            "capability": "com.huawei.service.device_security.safety_detect"
+          }
+        ]
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

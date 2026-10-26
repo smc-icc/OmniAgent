@@ -1,0 +1,33 @@
+/release/
+/runtime-data/
+/route-inventory.txt
+.specstory/
+backend/data/uploads/*
+!backend/data/uploads/.gitkeep
+
+# Community: deployment state, vendor keys and commercial plugin packages stay local.
+*.pem
+*.key
+*.lic
+*.smcp
+*.smcc
+*.unsigned.json
+backend/data/community/
+
+# Public Community snapshot: keep local credentials and runtime artifacts private.
+**/node_modules/
+**/dist/
+**/__pycache__/
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.native.example
+*.pem
+*.key
+*.lic
+*.smcu
+*.smcp
+*.smcc
+**/backups/
+**/logs/
+*.tar.gz

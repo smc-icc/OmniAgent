@@ -1,0 +1,19 @@
+{
+  "apiType": "stageMode",
+  "buildOption": {
+    // PJSIP 的 NAPI 封装；third_party/pjsip 由 build-pjsip-harmony.sh 产出，
+    // 未产出时这里会编译失败，属预期（过渡版本可整块注释掉 externalNativeOptions）
+    "externalNativeOptions": {
+      "path": "./src/main/cpp/CMakeLists.txt",
+      "arguments": "",
+      "cppFlags": "-std=c++17",
+      "abiFilters": ["arm64-v8a"]
+    }
+  },
+  "targets": [
+    {
+      "name": "default",
+      "runtimeOS": "HarmonyOS"
+    }
+  ]
+}

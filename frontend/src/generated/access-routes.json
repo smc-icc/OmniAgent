@@ -1,0 +1,5390 @@
+[
+  {
+    "method": "GET",
+    "path": "/health",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/upload",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/upload",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/me",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/tenants",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/bootstrap",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/access/users/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/users/:id/sync",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/users/:id/permissions",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/access/users/:id/permissions",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/entities/:kind",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/access/entities/:kind/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/access/entities/:kind/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/entities/:kind/:id/assignments",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/access/entities/:kind/:id/members",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/access/entities/:kind/:id/permissions",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/extensions",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/access/extensions/:num",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/access/extensions/:num",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.update"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:id/update_active_at",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:id/cache_keys",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/agents/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/agents/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agents/bulk_create",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/teams",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/teams",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/teams/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/teams/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/teams/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/teams/:team_id/team_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/teams/:team_id/team_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/accounts/:account_id/teams/:team_id/team_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/teams/:team_id/team_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/agent_bots",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agent_bots",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/agent_bots/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/agent_bots/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/agent_bots/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.delete"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/agent_bots/:id/avatar",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agent_bots/:id/reset_access_token",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/custom_roles",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/custom_roles",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/custom_roles/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/custom_roles/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/custom_roles/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:policy_id/users",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:policy_id/users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:policy_id/users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:policy_id/inbox_limits",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:policy_id/inbox_limits/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/agent_capacity_policies/:policy_id/inbox_limits/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/voicemails",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.read",
+      "resource": "voicemail"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/voicemails/:id/read",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.update",
+      "resource": "voicemail"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/voicemails/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.delete",
+      "resource": "voicemail"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/voicemails/:id/audio",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.recording",
+      "resource": "voicemail"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/outbound/tasks",
+    "policy": {
+      "mode": "operator",
+      "permission": "outbound.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/outbound/tasks/:id/start",
+    "policy": {
+      "mode": "operator",
+      "permission": "outbound.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/outbound/tasks/:id/pause",
+    "policy": {
+      "mode": "operator",
+      "permission": "outbound.execute"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/monitor/overview",
+    "policy": {
+      "mode": "operator",
+      "permission": "monitor.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/monitor/agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "monitor.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/monitor/map-config",
+    "policy": {
+      "mode": "operator",
+      "permission": "monitor.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/monitor/map-config",
+    "policy": {
+      "mode": "operator",
+      "permission": "monitor.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/contacts/directory",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/contacts/directory/search",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/tasks",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/results/stats",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/results",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/results/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/results/:id/review",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.review"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/internal/aiqc/task-updated",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/analytics/:type",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/alerts",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/alerts/:id/ack",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/rules/packages",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/rules/packages",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/rules/versions",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/rules/versions/:id/publish",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.publish"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/rules/published",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/appeals",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/results/:id/appeal",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.appeal"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/appeals/:id/resolve",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.resolve"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/rectifications",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/results/:id/rectification",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/qc/rectifications/:id/state",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/qc/audit-logs",
+    "policy": {
+      "mode": "operator",
+      "permission": "inspection.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/announcements/recipients",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/announcements/manage",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/announcements/manage",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/announcements/manage/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/announcements/manage/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/announcements/groups",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/announcements/groups/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/announcements/groups/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/sign_in",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/auth/sign_out",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/auth/validate_token",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/login-session",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/password",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/auth/password",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/auth/confirmation",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/confirmation",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/saml_login",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/profile",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/profile/avatar",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/availability",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/auto_offline",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/profile/set_active_account",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/resend_confirmation",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/reset_access_token",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/mfa",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/mfa",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/mfa/verify",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/profile/mfa",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/profile/mfa/backup_codes",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/notification_subscriptions",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/notification_subscriptions",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/platform/api/v1/users/:id/token",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/auth/login-code/capabilities",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/login-code/sign_in",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/users/:id/login-codes",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/users/:id/login-codes",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/access/users/:id/login-codes/:codeId",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/auth/phone/capabilities",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/phone/request",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/phone/sign_in",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/phone/select_vdn",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/campaigns",
+    "policy": {
+      "mode": "operator",
+      "permission": "campaign.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/campaigns",
+    "policy": {
+      "mode": "operator",
+      "permission": "campaign.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/campaigns/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "campaign.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/campaigns/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "campaign.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/campaigns/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "campaign.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/preferences",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/captain/preferences",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/assistants",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/assistants",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/tools",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/playground",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/inboxes/:inbox_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/scenarios",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/scenarios",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/captain/assistants/:id/scenarios/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/assistant_responses",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/copilot_threads",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/copilot_threads",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/copilot_threads/:thread_id/copilot_messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/copilot_threads/:thread_id/copilot_messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/custom_tools",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/custom_tools",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/captain/custom_tools/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/documents",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/documents",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/captain/documents/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/captain/documents/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/tasks/rewrite",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/tasks/summarize",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/tasks/reply_suggestion",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/tasks/label_suggestion",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/tasks/follow_up",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/captain/bulk_actions",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/email/send-context",
+    "policy": {
+      "mode": "operator",
+      "permission": "email.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/email/send",
+    "policy": {
+      "mode": "operator",
+      "permission": "email.send"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/sms-templates",
+    "policy": {
+      "mode": "operator",
+      "permission": "sms.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/sms-templates/send-context",
+    "policy": {
+      "mode": "operator",
+      "permission": "sms.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/sms-templates",
+    "policy": {
+      "mode": "operator",
+      "permission": "sms.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/sms-templates/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "sms.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/sms-templates/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "sms.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/sms-templates/:id/send",
+    "policy": {
+      "mode": "operator",
+      "permission": "sms.send"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/active",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/search",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/filter",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/import",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.import"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/export",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.export"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/contacts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/contacts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.delete"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/contacts/:id/avatar",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/:id/contactable_inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/:id/destroy_custom_attributes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/companies",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/companies",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/companies/search",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/companies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/companies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/companies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/contact_inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/notes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/notes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/notes/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/contacts/:contact_id/conversations",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/custom_attribute_definitions",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/custom_attribute_definitions",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/custom_attribute_definitions/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/custom_attribute_definitions/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/custom_attribute_definitions/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/contact_inboxes/filter",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/bulk_actions",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/actions/contact_merge",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.merge"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/translate-text",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.create",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/meta",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/search",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/filter",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/conversations/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/conversations/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.delete",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/messages/:msg_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/messages/:msg_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.delete",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/messages/:msg_id/translate",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/messages/:msg_id/retry",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/assignments",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.transfer",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/participants",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/participants",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.conference",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/participants",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.conference",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/participants",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.conference",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/draft_messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/draft_messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/draft_messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/direct_uploads",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/mute",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/unmute",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/transcript",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.export",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/toggle_status",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.close",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/toggle_priority",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/toggle_typing_status",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/update_last_seen",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/unread",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/custom_attributes",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/attachments",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/conversations/:id/inbox_assistant",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.ai",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/dashboard_apps",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/dashboard_apps",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/dashboard_apps/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/dashboard_apps/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/dashboard_apps/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/canned_responses",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/canned_responses",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/canned_responses/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/canned_responses/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/automation_rules",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/automation_rules",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/automation_rules/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/automation_rules/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/automation_rules/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/automation_rules/:id/clone",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/macros",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/macros",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/macros/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/macros/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/macros/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/macros/:id/execute",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.execute"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/custom_filters",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/custom_filters",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/custom_filters/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/custom_filters/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/custom_filters/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/csat_survey_responses",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/csat_template",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/csat_template",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/csat_template/analyze",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/sla_policies",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/sla_policies",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/sla_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/sla_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/sla_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/applied_slas",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/applied_slas/metrics",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/applied_slas/download",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.export"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/assignment_policies",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/assignment_policies",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/assignment_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/assignment_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/assignment_policies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "automation.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/extension-binding",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/extension-options",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/extension-requests",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/agent/extension-requests/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/agent/extension-binding",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/agent/extension-binding",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/extension-binding/retry",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/extension-management",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/extension-requests",
+    "policy": {
+      "mode": "operator",
+      "permission": "extension.approve"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/extension-requests/:id/approve",
+    "policy": {
+      "mode": "operator",
+      "permission": "extension.approve"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/access/extension-requests/:id/reject",
+    "policy": {
+      "mode": "operator",
+      "permission": "extension.approve"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/access/users/:id/extension-binding",
+    "policy": {
+      "mode": "operator",
+      "permission": "extension.assign"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/access/users/:id/extension-binding",
+    "policy": {
+      "mode": "operator",
+      "permission": "extension.assign"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/access/users/:id/extension-binding",
+    "policy": {
+      "mode": "operator",
+      "permission": "extension.assign"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/voice/sign-in",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/voice/startup-failure",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/voice/sign-out",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/:locale",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/:locale/categories",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/:locale/categories/:category_slug",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/:locale/articles",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/:locale/categories/:category_slug/articles",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/articles/:article_slug",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/hc/:slug/articles/:article_slug.png",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/assignable_agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/campaigns",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/agent_bot",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/set_agent_bot",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/avatar",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/health",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/sync_templates",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inboxes/:id/register_webhook",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/inbox_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inbox_members/:inbox_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/accounts/:account_id/inbox_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/inbox_members",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/channel_web_widgets",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/channel_web_widgets",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/channel_web_widgets",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.update"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/channel_email",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/channels/twilio_channel",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/assignable_agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/portals",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/portals",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/portals/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/portals/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.update"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/accounts/:account_id/portals/:id/archive",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/portals/:id/logo",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/portals/:id/categories",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/portals/:id/categories",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/portals/:id/categories/reorder",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/portals/:id/categories/:category_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/portals/:id/articles",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/portals/:id/articles",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/portals/:id/articles/:article_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/portals/:id/articles/:article_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/portals/:id/articles/:article_id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/portals/:id/articles/reorder",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/apps",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/apps/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/hooks",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/hooks",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/integrations/hooks/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/integrations/hooks/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/hooks/:id/process_event",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/slack/list_all_channels",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/slack",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/integrations/slack",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/dyte/create_a_meeting",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/dyte/add_participant_to_meeting",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/linear/teams",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/linear/create_issue",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/linear/link_issue",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/linear/unlink_issue",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/linear/search_issue",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/linear/linked_issues",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/integrations/shopify/auth",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/integrations/shopify/orders",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/integrations/notion",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/webhooks",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/webhooks",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.create"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/webhooks/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/webhooks/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "integration.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/twitter",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/twitter",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/whatsapp/:phone_number",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/whatsapp/:phone_number",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/instagram",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/instagram",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/facebook",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/facebook",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/line/:line_channel_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/telegram/:bot_token",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/sms/:phone_number",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/api/:identifier",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/app-channel/:identifier/messages",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/weibo/:identifier",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/miniprogram/:identifier",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/tiktok",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/shopify",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/enterprise/api/v1/accounts/:id/checkout",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/enterprise/api/v1/accounts/:id/subscription",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/enterprise/api/v1/accounts/:id/limits",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/enterprise/api/v1/accounts/:id/toggle_deletion",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/enterprise/api/v1/accounts/:id/topup_checkout",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/enterprise/webhooks/stripe",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/enterprise/webhooks/firecrawl",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/platform/api/v1/accounts",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/platform/api/v1/accounts",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/platform/api/v1/accounts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/platform/api/v1/accounts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/platform/api/v1/accounts/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/platform/api/v1/users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/platform/api/v1/users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/platform/api/v1/accounts/:account_id/account_users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/platform/api/v1/accounts/:account_id/account_users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/platform/api/v1/accounts/:account_id/account_users",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/platform/api/v1/agent_bots",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/platform/api/v1/agent_bots",
+    "policy": {
+      "mode": "operator",
+      "permission": "access.manage"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/sessions/start",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/sessions/:id/message",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/sessions/:id/end",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/reply",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/transfer",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/leave-message",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/ended",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/robot",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/sql",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/asr",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/callback/wechat-auth",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/acd/finish",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/acd/ring-ack",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/dev/acd-finish",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/itr/offline-messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/itr/leave-messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/leave-messages/:id/claim",
+    "policy": {
+      "mode": "operator",
+      "permission": "voicemail.claim"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/itr/queue-status/:conversationId",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/itr/csat/invite",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.update",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/sessions/:id/leave-queue",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.close",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/sessions/:id/transfer",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.transfer",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/sessions/:id/invite",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.conference",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/itr/observe/recent",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/knowledge/bases",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/bases",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/bases/:id/reindex",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.reindex"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/documents/:id/reindex",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.reindex"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/knowledge/bases/:id/access",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.grant"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/bases/:id/documents",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/documents/:id/publish",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.publish"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/documents/:id/withdraw",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.publish"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/knowledge/documents/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/knowledge/documents/:id/download",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.download"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/knowledge/ask",
+    "policy": {
+      "mode": "operator",
+      "permission": "ai.execute"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/labels/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/labels/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/labels/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/sip-credentials",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/push-devices",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/push-devices",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/agent/push-devices",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/notifications",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/notifications/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/accounts/:account_id/notifications/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/notifications/read_all",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/notifications/destroy_all",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/notifications/unread_count",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/notifications/:id/snooze",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/accounts/:account_id/notifications/:id/unread",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/notification_settings",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/notification_settings",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/search",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/summary",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/bot_summary",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/teams",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/conversations",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/conversations_summary",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/conversation_traffic",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/bot_metrics",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/inbox_label_matrix",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/first_response_time_distribution",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/reports/outgoing_messages_count",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/summary_reports/agent",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/summary_reports/team",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/summary_reports/inbox",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/summary_reports/label",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/summary_reports/channel",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/live_reports/conversation_metrics",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/live_reports/grouped_conversation_metrics",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/accounts/:account_id/year_in_review",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/audit_logs",
+    "policy": {
+      "mode": "operator",
+      "permission": "audit.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/status",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/agent/status",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/profile",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/skill-groups",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/agent/skill-groups",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/skill-groups/sign-in-all",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/skill-groups/sign-out-all",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/org-matrix",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/acd-queuing",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/agent/acd-queuing",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/transfer/catalog",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.transfer"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/transfer/agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.transfer"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/workspace/online-agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/workspace/snatch-targets",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.snatch",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/workspace/snatch",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.snatch",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/workspace/queue-sessions",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.queue",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/workspace/queue-take",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.queue",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/workspace/conference",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.conference",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/workspace/monitor",
+    "policy": {
+      "mode": "operator",
+      "permission": "monitor.intervene",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/workspace/ims-force",
+    "policy": {
+      "mode": "operator",
+      "permission": "monitor.force",
+      "resource": "workspace"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/workspace/snatch-targets",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.snatch"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/workspace/queue-calls",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.queue"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/workspace/queue-take",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.queue"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/workspace/online-agents",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/workspace/rest-leaders",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/internal-chats",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/internal-chats",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/internal-chats/:peerId/messages",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/internal-chats/:peerId/read",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/internal-chats/:peerId/approve-rest",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.approve"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/rest-requests",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/rest-requests/meta",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/rest-requests",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/change-password",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/profile",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/quick-links",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/memos",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/dashboard/memos",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/dashboard/memos/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/metrics",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/channel-volume",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/announcements",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/dashboard/announcements",
+    "policy": {
+      "mode": "operator",
+      "permission": "announcement.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/dashboard/announcements/read",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/dashboard/announcements/:id/read",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/dashboard/announcements/:id/unread",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/dashboard/calendar-events",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/dashboard/calendar-events",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/dashboard/calendar-events/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/dashboard/calendar-events/:id",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/customers",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/customers/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/customers/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/customers/:id/notes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/customers/:id/notes",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/customers/:id/notes/:noteId",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/customers/:id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/customers/:id/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/customers/:id/timeline",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/crm/labels",
+    "policy": {
+      "mode": "operator",
+      "permission": "efficiency.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/companies",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/companies",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/companies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.read"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/companies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/companies/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "company.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/opportunities",
+    "policy": {
+      "mode": "operator",
+      "permission": "opportunity.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/opportunities",
+    "policy": {
+      "mode": "operator",
+      "permission": "opportunity.create"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/opportunities/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "opportunity.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/opportunities/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "opportunity.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent-shifts",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.read"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/agent-shifts",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.update"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent-shifts/staff",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/agent-shifts/staff/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent-shifts/leaves",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/agent-shifts/leaves/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent-shifts/cell",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.create"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent-shifts/notes",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.create"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/agent-shifts/notes",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.delete"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent-shifts/holidays-2026",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.create"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent-shifts/export.csv",
+    "policy": {
+      "mode": "operator",
+      "permission": "schedule.export"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/navigation/tree",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/contacts",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/contacts/export.csv",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.export"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/agent-stats",
+    "policy": {
+      "mode": "operator",
+      "permission": "organization.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/sessions/:id/messages",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/call-records",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.recording"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/recordings",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.recording"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/sessions/:id/call-record",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.recording",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/sessions/:id/recording",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.recording",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/sessions/:id/end",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.close",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/omnichannel/sessions/:id/shake",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/sessions/:id/ai",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.ai",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/omnichannel/sessions/:id/ai",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.ai",
+      "resource": "conversation"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/customers/:id",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/after-sales",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/ecom-orders",
+    "policy": {
+      "mode": "operator",
+      "permission": "customer.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/knowledge",
+    "policy": {
+      "mode": "operator",
+      "permission": "knowledge.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/reports/sessions",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/tts/:file",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.reply"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/wechat-channels/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/channels/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/recording-access/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/ops",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/ops/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/asr/health",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/users/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/vdns/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/managed-users/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/system-superuser/sync",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/itr/inboxes",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/platform-config/itr/inbox-binding",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/overview",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/integrations",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/platform-config/integrations/:key",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.update"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/platform-config/integrations/:key",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.delete"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/skill-groups",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/business-hours",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/platform-config/business-hours",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/params",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/platform-config/params/:key",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/public-base-url",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/platform-config/public-base-url",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/platform-config/sms-provider",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/platform-config/sms-provider",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/bi/catalog",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/bi/data-pack",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/bi/export/summary",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.export"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/omnichannel/csat/summary",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/overview",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/kpi-definitions",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/me",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/team-scores",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/agent-scores",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/trend",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/calibration-queue",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/periods",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/performance/goals",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.read"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/performance/goals",
+    "policy": {
+      "mode": "operator",
+      "permission": "report.update"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/search/global",
+    "policy": {
+      "mode": "operator",
+      "permission": "conversation.read"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/auth/social/providers",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/social/authorize",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/social/callback/:provider",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/social/exchange",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/social/bind",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/auth/social/cancel",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/video/entries/:entryId",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/video/entries/:entryId/sessions",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "DELETE",
+    "path": "/public/api/video/sessions/:sessionId",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/wechat/mp/:app_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/wechat/mp/:app_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/wechat/oauth",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/wecom/kf/:channel_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/wecom/kf/:channel_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/webhooks/wecom/contact/:channel_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/webhooks/wecom/contact/:channel_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/config",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/widget/conversations",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/conversations",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/conversations/:id/toggle_typing",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/conversations/:id/update_last_seen",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/widget/conversations/:id/toggle_status",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/conversations/:id/transcript",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/conversations/:id/set_custom_attributes",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/widget/messages/:conversation_id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/messages",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/public/api/v1/widget/messages/:id",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/widget/contact",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/public/api/v1/widget/contact",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/widget/campaigns",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/events",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/public/api/v1/widget/inbox_members",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/public/api/v1/widget/direct_uploads",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/accounts/:account_id/inboxes/:inbox_id/working_hours",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/accounts/:account_id/inboxes/:inbox_id/working_hours",
+    "policy": {
+      "mode": "operator",
+      "permission": "channel.update"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/agent/ccs-profile",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/agent/ccs-session",
+    "policy": {
+      "mode": "session"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/internal/hub/events",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/internal/hub/health",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/internal/hub/metrics",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/internal/hub/dlq",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/internal/hub/dlq/:id/replay",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/internal/hub/dlq/replay",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/internal/hub/reconcile",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/internal/hub/archive",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/cable*",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/cable*",
+    "policy": {
+      "mode": "external"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/vdn/working_hours",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.read"
+    }
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/vdn/working_hours",
+    "policy": {
+      "mode": "operator",
+      "permission": "settings.update"
+    }
+  }
+]

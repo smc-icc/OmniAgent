@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>全媒体坐席 - OmniAgent</title>
+  </head>
+  <body>
+    <div id="mobile-launch" hidden>
+      <img id="mobile-launch-image" alt="细语" />
+      <div id="mobile-launch-failure" hidden role="alert">
+        <p>应用加载失败</p><button type="button" onclick="location.reload()">重试</button>
+      </div>
+    </div>
+    <style>
+      #mobile-launch:not([hidden]) { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; background: #fff; }
+      #mobile-launch-image { width: 100%; height: 100%; object-fit: contain; }
+      #mobile-launch-failure:not([hidden]) { position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); background: #fff; padding: 12px 24px; color: #344054; text-align: center; }
+      #mobile-launch-failure button { min-width: 100px; min-height: 44px; background: #0066b3; color: #fff; border: 0; border-radius: 6px; font-size: 16px; }
+    </style>
+    <script>
+      (function () {
+        var platform = window.Capacitor && window.Capacitor.getPlatform ? window.Capacitor.getPlatform() : '';
+        if (window.__OMNI_NATIVE_SHELL__ !== 'harmonyos' && platform !== 'android' && platform !== 'ios') return;
+        var launch = document.getElementById('mobile-launch');
+        var image = document.getElementById('mobile-launch-image');
+        var failure = document.getElementById('mobile-launch-failure');
+        launch.hidden = false;
+        image.src = '/mobile-brand/original/launch-screen.png';
+        document.title = '细语';
+        var fail = function () { if (launch.isConnected) failure.hidden = false; };
+        var watchdog = setTimeout(fail, 15000);
+        window.__OMNI_FINISH_LAUNCH__ = function () {
+          clearTimeout(watchdog); launch.remove();
+          window.removeEventListener('error', fail); window.removeEventListener('unhandledrejection', fail);
+        };
+        window.__OMNI_FAIL_LAUNCH__ = fail;
+        window.addEventListener('error', fail);
+        window.addEventListener('unhandledrejection', fail);
+      })();
+    </script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

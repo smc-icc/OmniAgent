@@ -1,0 +1,2 @@
+const test=require('node:test'),assert=require('node:assert/strict');const {allowed}=require('./export-community.cjs');
+test('runtime TypeScript diagnostics are retained while generated debug artifacts remain excluded',()=>{assert.equal(allowed('backend/src/modules/itr/debug-ingest.ts'),true);assert.equal(allowed('backend/logs/debug-session.json'),false);assert.equal(allowed('frontend/native/plugins/android/build/debug-output.txt'),false);});

@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "细语智能客服"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "细语"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "细语"
+    },
+    {
+      "name": "reason_microphone",
+      "value": "坐席通话需要使用麦克风"
+    },
+    {
+      "name": "reason_camera",
+      "value": "视频通话需要使用摄像头"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@omniagent/omni-sip",
+  "version": "0.1.0",
+  "description": "OmniAgent 移动坐席的原生 SIP（PJSIP）与推送 Capacitor 插件",
+  "private": true,
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "android/",
+    "ios/",
+    "index.js",
+    "index.d.ts"
+  ],
+  "capacitor": {
+    "android": {
+      "src": "android"
+    },
+    "ios": {
+      "src": "ios"
+    }
+  },
+  "devDependencies": {
+    "@capacitor/core": "^7.4.2"
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=7.0.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "entry",
+  "version": "0.1.0",
+  "description": "OmniAgent HarmonyOS entry",
+  "main": "",
+  "author": "sm-cloud",
+  "license": "ISC",
+  "dependencies": {
+    "libomnisip.so": "file:./src/main/cpp/types/libomnisip"
+  }
+}

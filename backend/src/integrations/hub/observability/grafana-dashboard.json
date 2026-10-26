@@ -1,0 +1,118 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "Hub lag",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "hub_lag_seconds", "legendFormat": "lag", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "id": 2,
+      "title": "Outbox backlog",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "hub_outbox_backlog", "legendFormat": "backlog", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "id": 3,
+      "title": "Oldest unconsumed",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "hub_oldest_unconsumed_seconds", "legendFormat": "oldest", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 4,
+      "title": "Delivery latency",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "hub_latency_p50_ms", "legendFormat": "p50", "refId": "A" },
+        { "expr": "hub_latency_p95_ms", "legendFormat": "p95", "refId": "B" },
+        { "expr": "hub_latency_p99_ms", "legendFormat": "p99", "refId": "C" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 8 },
+      "id": 5,
+      "title": "DLQ size",
+      "type": "stat",
+      "targets": [
+        { "expr": "hub_dlq_size", "legendFormat": "dlq", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 8 },
+      "id": 6,
+      "title": "Circuit open",
+      "type": "stat",
+      "targets": [
+        { "expr": "hub_circuit_open_count", "legendFormat": "open", "refId": "A" }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+      "id": 7,
+      "title": "Delivered / failed / retry",
+      "type": "timeseries",
+      "targets": [
+        { "expr": "rate(hub_delivered_total[5m])", "legendFormat": "delivered", "refId": "A" },
+        { "expr": "rate(hub_failed_total[5m])", "legendFormat": "failed", "refId": "B" },
+        { "expr": "rate(hub_retry_total[5m])", "legendFormat": "retry", "refId": "C" }
+      ]
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["icc", "hub"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Prometheus",
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "ICC Integration Hub",
+  "uid": "icc-integration-hub",
+  "version": 1
+}

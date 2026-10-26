@@ -1,0 +1,56 @@
+# 把 Hub 指标接到本机 Prometheus + Grafana（不改现网 Grafana）。
+# 先让 OmniAgent 或 hub:standalone 露出 /internal/hub/metrics?format=prom
+#
+#   cd OmniAgent/backend/src/integrations/hub/observability
+#   docker compose up -d
+# Grafana: http://127.0.0.1:3302  admin/admin  → 文件夹 ICC / ICC Integration Hub
+# 宿主机 3002=Omni 前端、9090 常被本机代理占用，故映射 3302 / 9091
+#
+# 与实验室同项目名，Docker Desktop 归到 smc-icc-test。
+# 本目录 docker compose down 只停本文件服务；不要加 --remove-orphans。
+
+name: smc-icc-test
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: icc-hub-prometheus
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus-alerts.yaml:/etc/prometheus/alerts.yaml:ro
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-lifecycle
+    ports:
+      - '9091:9090'
+    networks:
+      default:
+        ipv4_address: 172.22.0.15
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: icc-hub-grafana
+    depends_on:
+      - prometheus
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana-dashboard.json:/var/lib/grafana/dashboards/icc-hub.json:ro
+    ports:
+      - '3302:3000'
+    networks:
+      default:
+        ipv4_address: 172.22.0.16
+    restart: unless-stopped
+
+networks:
+  default:
+    name: ${SAAS_NET:-smc-icc-test-net}
+    external: true

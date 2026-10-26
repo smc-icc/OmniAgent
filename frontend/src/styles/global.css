@@ -1,0 +1,68 @@
+:root {
+  --oa-primary: #0066b3;
+  --oa-primary-dark: #004a82;
+  --oa-bg: #e8f0f8;
+  --oa-card: #ffffff;
+  --oa-text: #303133;
+  --oa-muted: #909399;
+
+  /* 刘海屏 / 底部手势条安全区。Web 下 env() 全为 0，取值天然退化为桌面行为 */
+  --oa-safe-top: env(safe-area-inset-top, 0px);
+  --oa-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --oa-safe-left: env(safe-area-inset-left, 0px);
+  --oa-safe-right: env(safe-area-inset-right, 0px);
+
+  --oa-mobile-header-h: 48px;
+  --oa-mobile-tabbar-h: 54px;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  font-family: 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+  background: var(--oa-bg);
+  color: var(--oa-text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/*
+ * 原生壳（Capacitor / Tauri / 鸿蒙 ArkWeb）。main.ts 会在 <html> 上打
+ * native-shell 与 native-<shell> 两个 class，这里给出对应样式。
+ */
+html.native-shell,
+html.native-shell body,
+html.native-shell #app {
+  /* 移动浏览器地址栏收起时 100vh 会超出可视区，dvh 才是真实可视高度 */
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html.native-shell {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 原生壳里长按选中/放大镜是误操作来源；输入框保留可选 */
+html.native-shell body {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+html.native-shell input,
+html.native-shell textarea,
+html.native-shell [contenteditable='true'] {
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+
+/* 移动壳里的滚动容器统一开启惯性滚动 */
+html.native-capacitor .oa-scroll,
+html.native-harmonyos .oa-scroll {
+  -webkit-overflow-scrolling: touch;
+}

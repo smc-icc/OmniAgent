@@ -1,0 +1,242 @@
+# ICC Integration Hub 配置样例
+# 复制为 hub.yaml 后设置 HUB_CONFIG_PATH。环境变量覆盖同名项：
+#   HUB_ENABLED=0|1   HUB_ROLE=inline|worker|standalone   HUB_INGEST=0|1
+#   HUB_SINKS_DISABLED=oracle,partner_http   HUB_INGEST_MODE=outbox
+
+enabled: false
+role: inline
+
+ingest:
+  mode: outbox              # outbox | cdc | mq | legacy_sync | multi
+  outbox:
+    pollIntervalMs: 50
+    idleMaxMs: 500
+    batchSize: 200
+    safetyLagMs: 1000
+    claimTimeoutMs: 120000
+    retentionDays: 7
+    archiveHour: 3              # 本地时区每日归档窗口（03:00–03:09）
+    archiveBatchSize: 500
+    backlogAlertRows: 100000
+    backlogAlertSeconds: 300
+
+  # --- 只改 ingest.mode 即可切换摄取方式（P3）---
+  # cdc:
+  #   driver: native            # native | debezium | canal
+  #   serverId: 65535
+  #   tables:
+  #     t_icc_base_leaveword:
+  #       insert: icc.voicemail.created
+  #       update: icc.voicemail.updated
+  #       subjectId: ID
+  #       partitionKey: "voicemail:{ID}"
+  #     t_icc_base_call_log:
+  #       insert: icc.call.ended
+  #       subjectId: CallID
+  # mq:
+  #   driver: redis-streams     # redis-streams | kafka | rabbitmq
+  #   url: ${HUB_MQ_URL}
+  #   topics: [icc.events]
+  #   consumerGroup: icc-hub
+  #   consumerName: icc-hub
+  #   maxInFlight: 100
+  #   ackMode: after-delivery
+  # legacy_sync:
+  #   tables:
+  #     t_icc_base_call_log_sync:
+  #       lookup: "SELECT * FROM t_icc_base_call_log WHERE PID = ?"
+  #       eventType: icc.call.ended
+  #       deleteAfterRead: true
+  # multi:
+  #   - { kind: outbox, enabled: true }
+  #   - { kind: legacy_sync, enabled: true }
+
+routes:
+  - name: voicemail-to-omni
+    match:
+      eventType: ["icc.voicemail.*"]
+    sinks: [omni_pg, agent_ws, log]
+    transform: voicemail_to_omni
+    onError: dlq
+  - name: call-ended-to-icc-pg
+    match:
+      eventType: ["icc.call.ended"]
+    sinks: [icc_call_log, log]
+    transform: call_ended_to_icc
+    onError: dlq
+  - name: agent-leg-to-icc-pg
+    match:
+      eventType: ["icc.agent.leg_ended"]
+    sinks: [icc_ag_route, log]
+    transform: ag_route_to_icc
+    onError: dlq
+  - name: agent-state-to-icc-pg
+    match: { eventType: ["icc.agent.state_changed"] }
+    sinks: [icc_state_trk, log]
+    transform: state_trk_to_icc
+    onError: dlq
+  - name: agent-login-to-icc-pg
+    match: { eventType: ["icc.agent.login_changed"] }
+    sinks: [icc_login_log, log]
+    transform: login_to_icc
+    onError: dlq
+  - name: cdr-to-icc-pg
+    match: { eventType: ["icc.call.cdr_written"] }
+    sinks: [icc_base_cdr, log]
+    transform: cdr_to_icc
+    onError: dlq
+  - name: acd-route-to-icc-pg
+    match: { eventType: ["icc.acd.route_ended"] }
+    sinks: [icc_acd_route, log]
+    transform: acd_route_to_icc
+    onError: dlq
+  - name: ivr-route-to-icc-pg
+    match: { eventType: ["icc.ivr.route_ended"] }
+    sinks: [icc_ivr_route, log]
+    transform: ivr_route_to_icc
+    onError: dlq
+  - name: ivr-trace-to-icc-pg
+    match: { eventType: ["icc.ivr.trace_written"] }
+    sinks: [icc_ivr_trace, log]
+    transform: ivr_trace_to_icc
+    onError: dlq
+
+transforms:
+  passthrough:
+    kind: passthrough
+  voicemail_to_omni:
+    kind: mapping
+    target: { table: icc_voicemails, conflictKey: [source_event_subject] }
+    fields:
+      source_event_subject: "$.subject.id"
+      caller_number: "$.payload.callerNumber"
+      callee_number: "$.payload.calleeNumber"
+      duration_sec: "$.payload.duration"
+      audio_path: "$.payload.fileName"
+      vdn_id: "$.tenant.vdnId"
+      occurred_at: { expr: "$.occurredAt", cast: timestamptz }
+      raw: "$"
+  call_ended_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_base_call_log, conflictKey: [pid] }
+  ag_route_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_ag_route_log, conflictKey: [pid] }
+  state_trk_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_ag_state_trk_record, conflictKey: [id] }
+  login_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_ag_login_log, conflictKey: [pid] }
+  cdr_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_base_cdr, conflictKey: [id] }
+  acd_route_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_acd_route_log, conflictKey: [pid] }
+  ivr_route_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_ivr_route_log, conflictKey: [pid] }
+  ivr_trace_to_icc:
+    kind: mapping
+    fromPayload: true
+    target: { table: t_icc_ivr_trace_log, conflictKey: [pid] }
+
+sinks:
+  log:
+    kind: log
+  omni_pg:
+    kind: pg
+    schema: public
+    table: icc_voicemails
+  icc_call_log:
+    kind: pg
+    schema: icc
+    table: t_icc_base_call_log
+    conflictKey: [pid]
+  icc_ag_route:
+    kind: pg
+    schema: icc
+    table: t_icc_ag_route_log
+    conflictKey: [pid]
+  icc_state_trk:
+    kind: pg
+    schema: icc
+    table: t_icc_ag_state_trk_record
+    conflictKey: [id]
+  icc_login_log:
+    kind: pg
+    schema: icc
+    table: t_icc_ag_login_log
+    conflictKey: [pid]
+  icc_base_cdr:
+    kind: pg
+    schema: icc
+    table: t_icc_base_cdr
+    conflictKey: [id]
+  icc_acd_route:
+    kind: pg
+    schema: icc
+    table: t_icc_acd_route_log
+    conflictKey: [pid]
+  icc_ivr_route:
+    kind: pg
+    schema: icc
+    table: t_icc_ivr_route_log
+    conflictKey: [pid]
+  icc_ivr_trace:
+    kind: pg
+    schema: icc
+    table: t_icc_ivr_trace_log
+    conflictKey: [pid]
+  agent_ws:
+    kind: internal-socketio
+  # standalone 时关掉 agent_ws，改走 omni_notify（allowPrivate：内网 OmniAgent）
+  # omni_notify:
+  #   kind: http
+  #   url: ${OMNI_INTERNAL_EVENTS_URL}
+  #   allowPrivate: true
+  #   signing: { algorithm: hmac-sha256, secret: ${HUB_TO_OMNI_SECRET}, header: X-ICC-Signature }
+  # customer_oracle:
+  #   kind: oracle
+  #   connectString: ${ORA_CONNECT}
+  #   user: ${ORA_USER}
+  #   password: ${ORA_PASSWORD}
+  #   table: ICC_CALL_LOG
+  #   conflictKey: [PID]
+  #   batch: { maxSize: 200 }
+  # partner_mq:
+  #   kind: mq
+  #   driver: redis-streams
+  #   url: ${HUB_MQ_URL}
+  #   topic: icc.events
+  #   partitions: 16
+  # partner_http:
+  #   kind: http
+  #   url: https://partner.example.com/icc/events
+  #   timeoutMs: 5000
+  #   signing: { algorithm: hmac-sha256, secret: ${PARTNER_SECRET}, header: X-ICC-Signature }
+
+delivery:
+  laneCount: 16
+  maxAttempts: 8
+  retryBaseMs: 1000
+  retryMaxMs: 300000
+  circuitFailureThreshold: 8
+  circuitOpenMs: 30000
+  unroutedToDlq: false
+  catchupMaxPerSec: 0          # Hub 追平时限速，0=不限制；建议积压追平设 500~1500
+
+# 灰度务必填测试 VDN，避免全库对账把其它 VDN 灌进 DLQ
+reconcile:
+  hour: 3
+  minute: 30
+  vdnIds: []
+  sink: omni_pg

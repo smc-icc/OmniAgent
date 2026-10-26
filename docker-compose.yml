@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: omniagent-backend
+    ports:
+      - '3001:3001'
+    env_file:
+      - ./backend/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    environment:
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_ENDPOINT: http://127.0.0.1:9000
+      CCS_WS_FLASH_MS: ${CCS_WS_FLASH_MS:-0}
+      CCS_WS_LOGOUT_GRACE_MS: ${CCS_WS_LOGOUT_GRACE_MS:-45000}
+      CCS_WS_LOGOUT_GRACE_MOBILE_MS: ${CCS_WS_LOGOUT_GRACE_MOBILE_MS:-300000}
+      CCS_WS_QUEUE_HOLD_MOBILE_MS: ${CCS_WS_QUEUE_HOLD_MOBILE_MS:-60000}
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: omniagent-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: chatwoot_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: omniagent-redis
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: omniagent-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - miniodata:/data
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: omniagent-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      MINIO_BUCKET: ${MINIO_BUCKET:-omniagent-uploads}
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD &&
+      mc mb local/$$MINIO_BUCKET --ignore-existing &&
+      mc anonymous set download local/$$MINIO_BUCKET &&
+      echo 'MinIO bucket ready:' $$MINIO_BUCKET
+      "
+    restart: 'no'
+
+  frontend:
+    build: ./frontend
+    container_name: omniagent-frontend
+    ports:
+      - '5173:5173'
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  miniodata:

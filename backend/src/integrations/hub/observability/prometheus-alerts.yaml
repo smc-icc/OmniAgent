@@ -1,0 +1,47 @@
+groups:
+  - name: icc-hub
+    rules:
+      - alert: IccHubLagHigh
+        expr: hub_lag_seconds > 30
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: ICC Hub 投递 lag > 30s
+          description: '当前 lag={{ $value }}s，检查下游 sink / 熔断 / outbox 积压。'
+
+      - alert: IccHubOutboxBacklog
+        expr: hub_outbox_backlog > 100000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: ICC Hub outbox 未消费积压超过 10 万行
+          description: 'backlog={{ $value }}。可设 delivery.catchupMaxPerSec 限速追平，禁止按年龄删除未成功行。'
+
+      - alert: IccHubOldestUnconsumed
+        expr: hub_oldest_unconsumed_seconds > 300
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: ICC Hub 最老未消费事件超过 5 分钟
+          description: 'oldest={{ $value }}s。'
+
+      - alert: IccHubDlq
+        expr: hub_dlq_size > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: ICC Hub DLQ 非空
+          description: 'dlq={{ $value }}。修好下游后 POST /internal/hub/dlq/replay。'
+
+      - alert: IccHubCircuitOpen
+        expr: hub_circuit_open_count > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: ICC Hub 有 sink 处于熔断
+          description: 'circuitOpenCount={{ $value }}。'

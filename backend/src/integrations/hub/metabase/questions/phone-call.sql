@@ -1,0 +1,8 @@
+-- 电话详单（对照 S_ICIP_RPT_P_PhoneCall）
+SELECT *
+FROM icc.v_rpt_phone_call
+WHERE begintime >= {{start_date}}
+  AND begintime < {{end_date}}
+  [[AND vdnid = {{vdn_id}}]]
+ORDER BY begintime DESC
+LIMIT 5000;

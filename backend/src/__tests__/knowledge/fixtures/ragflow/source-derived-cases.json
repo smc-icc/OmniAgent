@@ -1,0 +1,11 @@
+{
+  "provenance": "source-derived-not-live",
+  "sourceCommit": "183bed69ded49c60bb1804419c9e13a9ca3abd70",
+  "source": "api/apps/restful_apis/document_api.py:_upload_local_documents",
+  "verifiedAt": null,
+  "cases": {
+    "partialUpload": { "code": 500, "message": "fixture upload failure", "data": [{ "id": "fixture-successful-document", "run": "UNSTART" }] },
+    "businessFailure": { "code": 102, "message": "fixture invalid document" },
+    "doneWithNoChunks": { "code": 0, "data": { "total": 1, "docs": [{ "id": "fixture-document", "run": "DONE", "progress": 1, "chunk_count": 0 }] } }
+  }
+}

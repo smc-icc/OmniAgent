@@ -1,0 +1,40 @@
+# 官方 Metabase 镜像，只读连 Omni PG schema icc（不改仓库 metabase/ 源码）。
+#
+#   docker compose -f docker-compose.yml up -d
+#
+# UI: http://127.0.0.1:3333
+# 必须与 smc-icc-omni-postgres 同一网络（PG 未映射宿主机 5432）。
+# 数据源：host=smc-icc-omni-postgres  db=chatwoot_dev  user=icc_rpt  schema=icc
+#
+# 与实验室同项目名，Docker Desktop 归到 smc-icc-test。
+# 本目录 docker compose down 只停本文件服务；不要加 --remove-orphans。
+# 数据卷沿用旧项目名 metabase_icc-hub-metabase-data，避免重建后丢配置。
+# 全新机器若报 volume 不存在：docker volume create metabase_icc-hub-metabase-data
+
+name: smc-icc-test
+
+services:
+  metabase:
+    image: metabase/metabase:v0.53.6
+    container_name: icc-hub-metabase
+    ports:
+      - '3333:3000'
+    environment:
+      MB_JETTY_PORT: 3000
+      JAVA_TIMEZONE: Asia/Shanghai
+    volumes:
+      - icc-hub-metabase-data:/metabase-data
+    networks:
+      default:
+        ipv4_address: 172.22.0.14
+    restart: unless-stopped
+
+volumes:
+  icc-hub-metabase-data:
+    name: metabase_icc-hub-metabase-data
+    external: true
+
+networks:
+  default:
+    name: ${SAAS_NET:-smc-icc-test-net}
+    external: true

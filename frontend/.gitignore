@@ -1,0 +1,54 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env.native.local
+scripts/__pycache__/
+
+# Tauri
+src-tauri/target
+
+# Native hosts are source; nested ignore files exclude generated assets/builds.
+/android/.idea/
+/android/**/*.jks
+/android/**/*.keystore
+/android/google-services.json
+/android/app/google-services.json
+/ios/**/*.p12
+/ios/**/*.p8
+/ios/**/*.mobileprovision
+
+# HarmonyOS build outputs
+native/harmonyos/**/build
+native/harmonyos/**/.hvigor
+native/harmonyos/entry/src/main/resources/rawfile/web/*
+!native/harmonyos/entry/src/main/resources/rawfile/web/index.html
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# PJSIP 编译产物与中间目录（由 native/plugins/omni-sip/scripts/build-pjsip-android.sh 生成）
+native/plugins/omni-sip/.pjsip-build/
+native/plugins/omni-sip/android/src/pjsua2/jniLibs/
+native/plugins/omni-sip/android/src/pjsua2/java/
+native/plugins/omni-sip/.pjsip-build-ios/
+native/plugins/omni-sip/ios/Frameworks/
+native/plugins/omni-sip/.pjsip-build-harmony/
+native/harmonyos/entry/src/main/cpp/third_party/
