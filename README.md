@@ -8,8 +8,8 @@ Omnichannel customer service platform with a unified agent workspace, customer a
 
 - backend/：Node.js / TypeScript 后端，使用 Fastify、Prisma、pnpm。
 - frontend/：Vue 坐席工作台前端，使用 npm。
-- docs/community/：Community 能力与发布说明。
-- tools/：公开源码导出工具。
+- docs/community/：Community 功能与运行说明。
+- tools/：源码检查与导出工具。
 
 ## 版本范围
 
@@ -44,10 +44,11 @@ npm run build
 pnpm test:community
 ~~~
 
-诊断上报默认关闭，仅在操作者显式设置 SMC_DEBUG_INGEST_URL 后启用；公开源码不包含固定开发者日志接收地址。
-
 ## License
 
 Apache-2.0；见 LICENSE。第三方依赖和原有源码声明仍遵循各自许可，见 THIRD_PARTY_NOTICES.md。原生 SIP 依赖的许可需按实际链接和交付内容单独满足。
 
-[公开快照来源与范围](PUBLICATION.md)
+## 文档
+
+- [Community 功能与运行说明](docs/community/README.md)
+- [ConfServer 配置管理平台](https://github.com/smc-icc/smc-confserver/tree/Community)
