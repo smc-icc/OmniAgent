@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "sourceRevision": "99b2a41e4f588a438fb18672ab5bd74ead71a723",
-  "createdAt": "2026-10-26T09:06:39.404Z",
+  "sourceRevision": "3cf26538b0288cab2d609e0639ab7ddbfe5add62",
+  "createdAt": "2026-10-26T09:24:23.486Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -2602,6 +2602,10 @@
     {
       "path": "docker-compose.yml",
       "sha256": "c91a76b5efc4228cb66bfc8fe4fbfcdc7a431f1867c600439b80a1c7f1b104a3"
+    },
+    {
+      "path": "docs/community/contact/qq-group.png",
+      "sha256": "5256c4d50044561d016257cba4cdee6ab5755566c45699dd1d798e18f9b2397f"
     },
     {
       "path": "docs/community/README.md",
@@ -5537,7 +5541,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "a79739f14de94f71224f8d67c0f49b849a600fddbb02810e4871594915c2b758"
+      "sha256": "13ca0c7ec6d287870cbac692abb2be43ec427e6e0f43e2e0195030a535c165a8"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",

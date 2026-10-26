@@ -106,6 +106,17 @@ npm run build
 - [Community 技术说明](docs/community/README.md)：开发配置、版本能力及当前实现边界。
 - [ConfServer](https://github.com/smc-icc/Confserver/tree/Community)：与 OmniAgent 配套的租户、渠道、版本及组件管理平台。
 
+## 联系方式
+
+- QQ 群：**1128992754**
+- 欢迎加入 SMC-ICC 交流群，交流使用经验、反馈问题与讨论功能需求。
+
+使用 QQ 扫描下方二维码加入群聊，也可以通过群号搜索加入。
+
+<img src="docs/community/contact/qq-group.png" alt="SMC-ICC QQ 交流群二维码，群号 1128992754" width="320" />
+
+[查看二维码原图](docs/community/contact/qq-group.png)
+
 ## License
 
 Apache-2.0，见 [LICENSE](LICENSE)。第三方依赖和已有源码声明仍遵循各自许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。原生 SIP 依赖的许可应按实际链接和交付内容单独满足。
