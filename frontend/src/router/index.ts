@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useAccessStore } from '@/stores/access'
 import { pagePermissions } from '@/utils/access'
 import { useMobileLayout } from '@/utils/platform'
+import { hasAndroidVault } from '@/services/auth/android-vault'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -248,7 +249,11 @@ router.beforeEach(async (to) => {
   if (!auth.isLoggedIn) {
     const result = await auth.autoLogin()
     if (result === true) {
-      await auth.startSocket()
+      try { await auth.startSocket() } catch (error) {
+        if (!hasAndroidVault()) throw error
+        auth.isLoggedIn = false
+        return { name: 'login', query: { restore: 'unavailable' } }
+      }
       const modules=useProductModulesStore(); await modules.refresh()
       if (!modules.canVisit(to.path)) return { path: useMobileLayout() ? '/m/sessions' : '/omnichannel' }
       if (to.meta.permission) {
@@ -261,6 +266,7 @@ router.beforeEach(async (to) => {
     if (result === 'session_expired') {
       return { name: 'login' }
     }
+    if (result === 'unavailable') return { name: 'login', query: { restore: 'unavailable' } }
     return { name: 'login', query: { redirect: to.fullPath } }
   }
   const modules=useProductModulesStore(); await modules.refresh()

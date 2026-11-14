@@ -9,6 +9,7 @@
     :sms-selection="smsSelection" :sms-selection-valid="smsSelectionValid" @select-sms-vdn="onSmsSelect" @cancel-sms-selection="cancelSmsSelection"
     :sms-message="smsRequest.message" :sms-challenge-active="smsRequestValid(smsRequest, smsNow)"
     @request-sms="onSmsRequest" @submit-sms="onSmsLogin" @refresh-sms="refreshSmsCapabilities"
+    :can-restore="Boolean(hasAndroidVault() && auth.token && !auth.isLoggedIn)" @restore="restoreSession"
     @submit="onSubmit" @submit-code="onAuthorizationCodeLogin" @provider="onSocialLogin" @organization-change="loadSocialProviders" @cancel-binding="cancelBinding" />
   <div v-else class="login-page">
     <div class="login-bg-shape login-bg-shape--tl" aria-hidden="true" />
@@ -221,6 +222,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { View, Hide } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
+import { hasAndroidVault } from '@/services/auth/android-vault'
 import { useAgentStore } from '@/stores/agent'
 import { useAccessStore } from '@/stores/access'
 import { formatOmniLoginError, isCredentialLoginError } from '@/utils/login-errors'
@@ -565,12 +567,25 @@ function storeRememberedLogin() {
   if (!rememberPassword.value) { localStorage.removeItem(REMEMBER_KEY); return }
   localStorage.setItem(REMEMBER_KEY, JSON.stringify({ account: email.value, password: password.value }))
 }
+async function restoreSession() {
+  if (loading.value) return
+  loading.value = true
+  formError.value = ''
+  try {
+    const result = await auth.autoLogin()
+    if (result !== true) { formError.value = result === 'no_auth' ? '登录已失效，请重新登录' : '无法恢复登录，请检查网络后重试'; return }
+    await auth.startSocket()
+    await router.replace(loginDestination(useAccessStore().systemSuperuser, mobile.value, loginRedirect.value))
+  } catch { auth.isLoggedIn = false; formError.value = '无法恢复登录，请检查网络后重试' }
+  finally { loading.value = false }
+}
 watch(rememberPassword, checked => { if (!checked) localStorage.removeItem(REMEMBER_KEY) })
 watch(email, () => { selectedVdnKey.value = ''; auth.clearVdnChoices() })
 onMounted(() => {
   loadRememberedLogin()
   localStorage.removeItem('ccs_extension')
-  if (auth.token && !auth.isLoggedIn) void abandonPartialSession()
+  if (auth.token && !auth.isLoggedIn && !hasAndroidVault()) void abandonPartialSession()
+  if (route.query.restore === 'unavailable') formError.value = '无法连接服务，请检查网络后重试'
   window.addEventListener('focus', tickSmsClock)
   window.addEventListener('pageshow', tickSmsClock)
   document.addEventListener('visibilitychange', tickSmsClock)

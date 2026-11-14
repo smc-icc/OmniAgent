@@ -161,7 +161,7 @@ export function connectSocket(token: string, accountId: number): Promise<Socket>
         ElMessage.warning(data?.message || '账号已在其他终端登录')
       }).catch(() => { /* ignore */ })
       void import('@/stores/auth').then(({ useAuthStore }) =>
-        useAuthStore().forceLogoutToLogin(),
+        useAuthStore().forceLogoutToLogin('session_replaced'),
       ).catch(() => { /* ignore */ })
     })
   }

@@ -1,9 +1,0 @@
-* -text
-*.sh text eol=lf
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.woff binary
-*.woff2 binary
-*.ttf binary

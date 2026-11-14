@@ -1,0 +1,14 @@
+import {beforeEach,it,expect,vi} from 'vitest';
+const m=vi.hoisted(()=>({execute:vi.fn(),update:vi.fn()}));
+vi.mock('../plugins/db.js',()=>({prisma:{conversations:{findUnique:async()=>({id:77,account_id:1,inbox_id:5,additional_attributes:{}}),update:m.update}}}));
+vi.mock('../shared/services/omni-runtime-persist.js',()=>({loadLeaveMessages:()=>[],saveLeaveMessages:vi.fn()}));
+vi.mock('../shared/services/omni-session-log.js',()=>({recordSessionAssigned:vi.fn(),recordSessionEnded:vi.fn(),recordSessionQueued:vi.fn()}));
+vi.mock('../integrations/ccs/acd-client.js',()=>({acdCancel:vi.fn()}));
+vi.mock('../shared/services/channel-route.js',()=>({channelOfConversation:async()=>({channelType:'web_widget',channelId:3}),normalizeRouteChannelType:()=> 'web_widget',resolveRoutes:async()=>[{appType:'itr',flowId:1017}]}));
+vi.mock('../modules/itr/route-exec.js',()=>({executeRoutes:m.execute}));
+import {beginRingAttempt} from '../shared/services/acd-ring-attempt.js';
+import {rememberQueue,forgetQueue,applyAcdRingAck,applyAcdFinishEvt} from '../modules/itr/itr-queue.js';
+beforeEach(()=>{vi.clearAllMocks();forgetQueue(77);m.execute.mockResolvedValue({ok:true,used:{appType:'itr'}});m.update.mockResolvedValue({});});
+it('does not route an early RingAck when synchronous DoRing rejects the same request',async()=>{const settle=beginRingAttempt(77);rememberQueue({requestId:77,vdnId:1,conversationId:77,startedAt:Date.now()});const ack=applyAcdRingAck({requestId:77,result:2});await Promise.resolve();expect(m.execute).not.toHaveBeenCalled();settle(2);await ack;expect(m.execute).not.toHaveBeenCalled();});
+it('routes an early RingAck exactly once when DoRing itself accepted the request',async()=>{const settle=beginRingAttempt(77);rememberQueue({requestId:77,vdnId:1,conversationId:77,startedAt:Date.now()});const ack=applyAcdRingAck({requestId:77,result:2});await Promise.resolve();expect(m.execute).not.toHaveBeenCalled();settle(0);await ack;expect(m.execute).toHaveBeenCalledTimes(1);});
+it('also suppresses an early FinishEvt for a synchronously rejected request',async()=>{const settle=beginRingAttempt(77);rememberQueue({requestId:77,vdnId:1,conversationId:77,startedAt:Date.now()});const event=applyAcdFinishEvt({requestId:77,agentId:0,finishedType:2});settle(2);await event;expect(m.execute).not.toHaveBeenCalled();});

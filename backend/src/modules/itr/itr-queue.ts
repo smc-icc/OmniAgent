@@ -1,3 +1,4 @@
+import { ringWasRejected } from '../../shared/services/acd-ring-attempt.js';
 /**
  * Shared ITR/ACD queue registry + FinishEvt assignment.
  */
@@ -489,6 +490,9 @@ export async function applyAcdFinishEvt(evt: {
   groupId?: number;
   skillId?: number;
 }) {
+  if (await ringWasRejected(evt.requestId)) {
+    return { result: 0, message: 'synchronous queue failure already handled', state: 'ignored' };
+  }
   // #region agent log
   agentDbg('K', 'itr-queue.ts:applyAcdFinishEvt', 'ACD FinishEvt', {
     requestId: evt.requestId,
@@ -570,6 +574,9 @@ export async function applyAcdRingAck(ack: {
   queueLen?: number;
   ewt?: number;
 }) {
+  if (await ringWasRejected(ack.requestId)) {
+    return { result: 0, message: 'synchronous queue failure already handled', state: 'ignored' };
+  }
   // #region agent log
   agentDbg('J', 'itr-queue.ts:applyAcdRingAck', 'ACD RingAck', {
     requestId: ack.requestId,

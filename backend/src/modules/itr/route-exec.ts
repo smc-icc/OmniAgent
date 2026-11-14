@@ -13,7 +13,7 @@ import { activeVdn } from '../access/access.scope.js';
 import { prisma } from '../../plugins/db.js';
 import { env } from '../../config/env.js';
 import { acdRing } from '../../integrations/ccs/acd-client.js';
-import { CHANNEL_TYPES } from '../../shared/channels/types.js';
+import { conversationLocale } from '../../shared/services/itr-locale.js';
 import { getQueueTip } from '../../shared/services/omni-ops.js';
 import {
   assignConversation,
@@ -166,24 +166,33 @@ async function execItr(
   try {
     const conv = await prisma.conversations.findUnique({
       where: { id: conversationId },
-      select: { inbox_id: true },
+      select: { inbox_id: true, contact_id: true, additional_attributes: true, inbox: { select: { channel_type: true } } },
     });
+    const vdnId = await vdnForConversation(conversationId, activeVdn(num(env.OMNI_AGENT_VDN_ID, 1)));
     const { itrStart } = await import('../../integrations/itr/itr-client.js');
     const rsp = await itrStart({
       conversationId: String(conversationId),
-      contactId: '',
-      channelType: CHANNEL_TYPES.WECHAT_MP,
+      contactId: String(conv?.contact_id ?? ''),
+      channelType: conv?.inbox?.channel_type || 'Channel::WebWidget',
       inboxId: conv?.inbox_id ?? 0,
       flowId: t.flowId,
-      vdnId: 0,
+      vdnId,
       callerId: '',
       // 调用方按场景带进来的 meta（如超时流程的 replyTimeout/waitedSeconds/workNo）
-      meta: ctx?.meta ?? {},
+      meta: { ...ctx?.meta, locale: conversationLocale(conv?.additional_attributes) },
     });
     const result = Number((rsp as Record<string, unknown>)?.result ?? 0);
     if (result !== 0) {
       return { ok: false, message: `itrStart failed result=${result}` };
     }
+    const current = await prisma.conversations.findUnique({ where: { id: conversationId }, select: { additional_attributes: true } });
+    const rawAttrs = current?.additional_attributes ?? conv?.additional_attributes;
+    const attrs = rawAttrs && typeof rawAttrs === 'object' ? rawAttrs as Record<string, unknown> : {};
+    const hosted = String(rsp.state || '') === 'waiting' || String(rsp.state || '') === 'queued';
+    await prisma.conversations.update({ where: { id: conversationId }, data: {
+      additional_attributes: { ...attrs, itr_flow_id: t.flowId, itr_hosted: hosted } as object,
+    } });
+    markItrHosted(conversationId, hosted);
     return { ok: true, message: 'itr started' };
   } catch (e) {
     return { ok: false, message: e instanceof Error ? e.message : String(e) };

@@ -15,6 +15,7 @@ import {
 } from '../../shared/services/channel-route.js';
 import { agentDbg } from './debug-ingest.js';
 import { pickItrFlowId } from './itr-flow-pick.js';
+import { conversationLocale } from '../../shared/services/itr-locale.js';
 
 export { pickItrFlowId } from './itr-flow-pick.js';
 
@@ -198,6 +199,7 @@ export async function autoStartItrForConversation(opts: {
       callerId: opts.callerId || `conv:${opts.conversationId}`,
       meta: {
         auto: true,
+        locale: conversationLocale(conv?.additional_attributes),
         event: String(
           attrsOf(conv?.additional_attributes).wx_event
             || attrsOf(conv?.additional_attributes).event
@@ -220,17 +222,27 @@ export async function autoStartItrForConversation(opts: {
     // 流程可能一启动就发出路由指令（route 节点），这里同样要执行：
     // 已路由时托管状态由 helper 定，别再无条件置 true 把它盖掉。
     const routed = await runRoutedInstructions(opts.conversationId, rsp);
-    if (!routed.handled) markItrHosted(opts.conversationId, true);
-    await prisma.conversations.update({
-      where: { id: opts.conversationId },
-      data: {
-        additional_attributes: {
-          ...attrsOf(conv?.additional_attributes),
-          itr_hosted: true,
-          itr_flow_id: flowId,
-        } as object,
-      },
-    });
+    if (!routed.handled) {
+      // Direct ACD callbacks can finish before StartSession returns. Preserve
+      // their persisted queue/greeting metadata and the actual assignment.
+      const current = await prisma.conversations.findUnique({
+        where: { id: opts.conversationId },
+        select: { additional_attributes: true, assignee_id: true },
+      });
+      const currentFlowId = Number(attrsOf(current?.additional_attributes).itr_flow_id || 0);
+      const activeFlowId = currentFlowId > 0 && currentFlowId !== fromConv ? currentFlowId : flowId;
+      const state = String(rsp.state || '');
+      const hosted = !current?.assignee_id && (state === 'waiting' || state === 'queued');
+      markItrHosted(opts.conversationId, hosted);
+      await prisma.conversations.update({
+        where: { id: opts.conversationId },
+        data: { additional_attributes: {
+          ...attrsOf(current?.additional_attributes ?? conv?.additional_attributes),
+          itr_hosted: hosted,
+          itr_flow_id: activeFlowId,
+        } as object },
+      });
+    }
     return rsp;
   } catch (e) {
     // #region agent log

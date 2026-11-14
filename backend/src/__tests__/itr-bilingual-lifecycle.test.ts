@@ -1,0 +1,14 @@
+import {it,expect,vi,beforeEach} from 'vitest';
+const m=vi.hoisted(()=>({conv:{id:77,inbox_id:5,account_id:1,assignee_id:null as number|null,additional_attributes:{locale:'en',department:'studio'} as Record<string,unknown>},start:vi.fn(),hosted:vi.fn(),update:vi.fn()}));
+vi.mock('../plugins/db.js',()=>({prisma:{conversations:{findUnique:async()=>m.conv,update:m.update},inboxes:{findUnique:async()=>({id:5,channel_type:'Channel::WebWidget',channel_id:3,auto_assignment_config:{itr_flow_id:1013}})}}}));
+vi.mock('../config/env.js',()=>({env:{ITR_AUTO_START:'1',ITR_DEFAULT_FLOW_ID:1000,OMNI_AGENT_VDN_ID:1}}));
+vi.mock('../shared/services/conf-itr-tenancy.js',()=>({assertItrConversationInbox:vi.fn()}));
+vi.mock('../shared/services/conf-tenancy.js',()=>({vdnForConversation:async()=>1}));
+vi.mock('../shared/services/channel-route.js',()=>({channelOfConversation:async()=>({channelId:3,channelType:'web_widget'}),resolveRoutes:async()=>[]}));
+vi.mock('../modules/itr/itr-queue.js',()=>({markItrHosted:m.hosted,isItrHosted:()=>false,isTimeoutFlow:()=>false,clearTimeoutFlow:vi.fn()}));
+vi.mock('../modules/itr/route-exec.js',()=>({executeRoutes:vi.fn(),parseRoutes:()=>[]}));
+vi.mock('../integrations/itr/itr-client.js',()=>({itrStart:m.start,itrOnMessage:vi.fn()}));
+import {autoStartItrForConversation} from '../modules/itr/itr-lifecycle.js';
+beforeEach(()=>{vi.clearAllMocks();m.conv.assignee_id=null;m.conv.additional_attributes={locale:'en',department:'studio'};m.start.mockImplementation(async()=>{m.conv.additional_attributes={...m.conv.additional_attributes,acd_request_id:77,itr_connect_tip:'Agent {{workNo}}'};return {result:0,state:'queued'};});m.update.mockResolvedValue({});});
+it('passes language to autoStart and retains callback metadata written during direct ACD transfer',async()=>{await autoStartItrForConversation({conversationId:77});expect(m.start).toHaveBeenCalledWith(expect.objectContaining({flowId:1013,vdnId:1,meta:expect.objectContaining({locale:'en'})}));expect(m.update).toHaveBeenCalledWith(expect.objectContaining({data:{additional_attributes:expect.objectContaining({locale:'en',acd_request_id:77,itr_connect_tip:'Agent {{workNo}}',itr_hosted:true})}}));});
+it('does not return an already assigned session to ITR handling',async()=>{m.start.mockImplementation(async()=>{m.conv.assignee_id=3;return {result:0,state:'queued'};});await autoStartItrForConversation({conversationId:77});expect(m.hosted).toHaveBeenCalledWith(77,false);});

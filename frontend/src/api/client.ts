@@ -32,7 +32,7 @@ api.interceptors.response.use(
       const url = String(err?.config?.url ?? '')
       if (!url.includes('/auth/sign_out') && !url.includes('/auth/sign_in')) {
         void import('@/stores/auth').then(({ useAuthStore }) =>
-          useAuthStore().forceLogoutToLogin(),
+          useAuthStore().forceLogoutToLogin('session_replaced'),
         ).catch(() => { /* ignore */ })
       }
     }

@@ -13,6 +13,8 @@ import { getNativeShell } from '@/utils/platform'
 import { isOnLoginPage, rememberCcsHealth, tabHadCcsSignIn } from '@/utils/ccs-health'
 import { clearOmniToken, readOmniToken, writeOmniToken } from '@/utils/auth-storage'
 import type { SocialAuthResult } from '@/services/auth/social-auth'
+import { clearSavedAndroidToken, hasAndroidVault, saveAndroidToken } from '@/services/auth/android-vault'
+import { shouldClearSession } from '@/services/auth/android-session'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(readOmniToken())
@@ -120,7 +122,9 @@ export const useAuthStore = defineStore('auth', () => {
   function startBoundSession(): Promise<void> {
     if(startupInFlight?.token===token.value)return startupInFlight.promise
     const identityToken=token.value
-    const operation=runBoundSession(identityToken).finally(()=>{if(startupInFlight?.promise===operation){startupInFlight=null;startingVoiceVersion=null}})
+    const operation=runBoundSession(identityToken).then(async()=>{
+      if(identityToken===token.value) await saveAndroidToken(identityToken).catch(error=>console.warn('[auth] unable to save Android session', error))
+    }).finally(()=>{if(startupInFlight?.promise===operation){startupInFlight=null;startingVoiceVersion=null}})
     startupInFlight={token:identityToken,promise:operation}
     return operation
   }
@@ -149,7 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /** 身份有效的未绑定或主动签出会话允许恢复全媒体。失败话务保留身份以供重试。 */
-  async function autoLogin(): Promise<true | 'no_auth' | 'session_expired'> {
+  async function autoLogin(): Promise<true | 'no_auth' | 'session_expired' | 'unavailable'> {
     if(!token.value)return 'no_auth'
     let body
     try {
@@ -158,28 +162,37 @@ export const useAuthStore = defineStore('auth', () => {
       user.value=body
       const method=body?.authentication_method
       authenticationMethod.value=['social','authorization_code','sms'].includes(method)?method:'password'
-    } catch {await logout();return 'no_auth'}
+    } catch (error) {
+      if (hasAndroidVault() && !shouldClearSession(error)) return 'unavailable'
+      await logout();return 'no_auth'
+    }
     const access=useAccessStore();await access.refresh()
+    if(hasAndroidVault() && !access.loaded)return 'unavailable'
     if(access.systemSuperuser){isLoggedIn.value=true;return true}
     const modules=useProductModulesStore();await modules.refresh()
+    if(hasAndroidVault() && !modules.loaded)return 'unavailable'
     if(!modules.enabled('icc')){clearCcsSignInMark();clearCcsHealthMarks();isLoggedIn.value=true;return true}
     const binding=useExtensionBindingStore()
-    try {await binding.refresh()}catch{return 'session_expired'}
+    try {await binding.refresh()}catch{return hasAndroidVault() ? 'unavailable' : 'session_expired'}
     if(!binding.binding.extension || binding.snapshot?.voice.state==='signed_out'){
       clearCcsSignInMark();clearCcsHealthMarks();isLoggedIn.value=true;return true
     }
-    if(binding.snapshot?.voice.state!=='signed_in'){isLoggedIn.value=false;return 'session_expired'}
+    if(binding.snapshot?.voice.state!=='signed_in'){
+      if(hasAndroidVault()){isLoggedIn.value=true;return true}
+      isLoggedIn.value=false;return 'session_expired'
+    }
     try {
       const {data}=await api.get<{logged_in:boolean;ccs_up?:boolean;ccs_generation?:number;ccs_boot_id?:string}>('/api/agent/ccs-session')
-      if(!data.logged_in){isLoggedIn.value=false;return 'session_expired'}
+      if(!data.logged_in){if(hasAndroidVault()){isLoggedIn.value=true;return true}isLoggedIn.value=false;return 'session_expired'}
       rememberCcsHealth({up:data.ccs_up!==false,generation:data.ccs_generation ?? 0,bootId:data.ccs_boot_id,logged_in:true})
-    }catch{return 'session_expired'}
+    }catch{return hasAndroidVault() ? 'unavailable' : 'session_expired'}
     isLoggedIn.value=true;return true
   }
 
   async function logout() {
     useProductModulesStore().reset()
     const identityToken=token.value
+    await clearSavedAndroidToken()
     const { unregisterSip } = await import('@/services/sip/registration')
     await unregisterSip()
     if(token.value!==identityToken)return
@@ -224,7 +237,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /** 话务会话没了：清会话回登录页，不提示原因。 */
-  async function forceLogoutToLogin(_reason?: string) {
+  async function forceLogoutToLogin(reason?: string) {
     if (forcingLogout) return
     forcingLogout = true
     const identityToken=token.value
@@ -244,7 +257,9 @@ export const useAuthStore = defineStore('auth', () => {
         /* agent store 可能尚未初始化 */
       }
       if(token.value && token.value!==identityToken)return
-      await logout()
+      if (hasAndroidVault() && reason !== 'session_replaced' && reason !== 'force_logout') {
+        isLoggedIn.value = false
+      } else await logout()
       if(token.value && token.value!==identityToken)return
       const { default: router } = await import('../router')
       if (router.currentRoute.value.name !== 'login') {

@@ -29,6 +29,25 @@ import com.getcapacitor.annotation.PermissionCallback
 )
 class OmniSipPlugin : Plugin(), SipCoreListener {
 
+    @PluginMethod
+    fun readSavedSession(call: PluginCall) {
+        try { call.resolve(JSObject().put("value", AndroidSessionVault(context).read())) }
+        catch (error: Exception) { call.reject("Unable to read saved session", error) }
+    }
+
+    @PluginMethod
+    fun writeSavedSession(call: PluginCall) {
+        val value = call.getString("value") ?: return call.reject("Missing session")
+        try { AndroidSessionVault(context).write(value); call.resolve() }
+        catch (error: Exception) { call.reject("Unable to save session", error) }
+    }
+
+    @PluginMethod
+    fun clearSavedSession(call: PluginCall) {
+        try { AndroidSessionVault(context).clear(); call.resolve() }
+        catch (error: Exception) { call.reject("Unable to clear saved session", error) }
+    }
+
     companion object {
         const val ALIAS_MIC = "microphone"
         const val ALIAS_PHONE = "phone"

@@ -5,6 +5,7 @@
         <img src="/mobile-brand/original/app-icon.png" width="114" height="114" alt="细语" />
         <h1>智能客服</h1>
       </header>
+      <button v-if="canRestore" class="mobile-login-submit" type="button" :disabled="loading" @click="$emit('restore')">重新连接</button>
 
       <nav v-if="!binding" class="mobile-login-methods" aria-label="登录方式">
         <button type="button" :aria-pressed="loginMode === 'account'" :disabled="loading" @click="loginMode = 'account'">账号登录</button>
@@ -114,7 +115,7 @@ import type { SmsVdnSelection } from '@/services/auth/sms-auth'
 import type { SocialProvider, SocialProviderId } from '@/services/auth/social-auth'
 
 withDefaults(defineProps<{
-  height: number; loading: boolean; error: string; binding: boolean
+  height: number; loading: boolean; error: string; binding: boolean; canRestore?: boolean
   socialEnabled?: boolean; providers?: SocialProvider[]; authorizationCodeEnabled?: boolean
   smsNotice?: string; smsStatusLoading?: boolean; smsSending?: boolean; smsCanSend?: boolean; smsCanLogin?: boolean
   smsSelection?: SmsVdnSelection | null; smsSelectionValid?: boolean
@@ -124,7 +125,7 @@ withDefaults(defineProps<{
   smsNotice: '', smsStatusLoading: false, smsSending: false, smsCanSend: false, smsCanLogin: false,
   smsSelection: null, smsSelectionValid: false, smsRetry: 0, smsMessage: '', smsChallengeActive: false,
   vdnChoices: () => [], vdnScope: 'seats' })
-defineEmits<{ submit: []; submitCode: []; requestSms: []; submitSms: []; refreshSms: []; selectSmsVdn: [vdnId: number]; cancelSmsSelection: []; provider: [id: SocialProviderId]; organizationChange: []; cancelBinding: [] }>()
+defineEmits<{ restore: []; submit: []; submitCode: []; requestSms: []; submitSms: []; refreshSms: []; selectSmsVdn: [vdnId: number]; cancelSmsSelection: []; provider: [id: SocialProviderId]; organizationChange: []; cancelBinding: [] }>()
 const loginMode = defineModel<'account' | 'authorization_code' | 'sms'>('mode', { default: 'account' })
 const smsPhone = defineModel<string>('smsPhone', { default: '' })
 const smsCode = defineModel<string>('smsCode', { default: '' })

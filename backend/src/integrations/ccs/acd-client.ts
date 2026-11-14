@@ -1,3 +1,4 @@
+import { beginRingAttempt } from '../../shared/services/acd-ring-attempt.js';
 import TarsRpc from '@tars/rpc';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -198,29 +199,36 @@ export function defaultOmniAcdCallbackObj(): string {
 }
 
 export async function acdRing(opts: AcdRingOpts): Promise<{ ret: number; rsp?: Record<string, unknown> }> {
-  const p = getAcdProxy();
-  const Req = loadAcdTars().structs.smc_icc.stACDRing_t;
-  if (!Req) throw new Error('stACDRing_t missing');
-  const req = new Req();
-  req.readFromObject({
-    RequestID: opts.requestId,
-    CallerID: opts.callerId || '',
-    CalledID: opts.calledId || '',
-    CallerType: opts.callerType ?? 1,
-    VDNID: opts.vdnId,
-    AgentGroupID: opts.agentGroupId ?? -1,
-    VIPLevel: opts.vipLevel ?? 1,
-    SkillID: opts.skillId ?? -1,
-    SkillLevel: opts.skillLevel ?? 1,
-    AgentID: opts.agentId ?? -1,
-    ConSN: opts.conSn ?? 0,
-    PID: opts.pid ?? opts.requestId,
-    MediaType: opts.mediaType ?? 0,
-    CallbackObj: opts.callbackObj ?? defaultOmniAcdCallbackObj(),
-  });
-  const result = await p.DoRing(req);
-  const rsp = result.response.arguments.rsp?.toObject?.() as Record<string, unknown> | undefined;
-  return { ret: result.response.return, rsp };
+  const settle = beginRingAttempt(opts.requestId);
+  let ringResult = -1;
+  try {
+    const p = getAcdProxy();
+    const Req = loadAcdTars().structs.smc_icc.stACDRing_t;
+    if (!Req) throw new Error('stACDRing_t missing');
+    const req = new Req();
+    req.readFromObject({
+      RequestID: opts.requestId,
+      CallerID: opts.callerId || '',
+      CalledID: opts.calledId || '',
+      CallerType: opts.callerType ?? 1,
+      VDNID: opts.vdnId,
+      AgentGroupID: opts.agentGroupId ?? -1,
+      VIPLevel: opts.vipLevel ?? 1,
+      SkillID: opts.skillId ?? -1,
+      SkillLevel: opts.skillLevel ?? 1,
+      AgentID: opts.agentId ?? -1,
+      ConSN: opts.conSn ?? 0,
+      PID: opts.pid ?? opts.requestId,
+      MediaType: opts.mediaType ?? 0,
+      CallbackObj: opts.callbackObj ?? defaultOmniAcdCallbackObj(),
+    });
+    const result = await p.DoRing(req);
+    const rsp = result.response.arguments.rsp?.toObject?.() as Record<string, unknown> | undefined;
+    ringResult = result.response.return;
+    return { ret: ringResult, rsp };
+  } finally {
+    settle(ringResult);
+  }
 }
 
 export async function acdCancel(opts: {
