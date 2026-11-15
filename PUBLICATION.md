@@ -1,6 +1,6 @@
 # Community 公开源码快照
 
-来源工程：OmniAgent。来源分支：Community。来源提交：4523e33c8e1cebe9113f92aa8217a2234f2ac7b6。生成日期：2026-11-14。
+来源工程：OmniAgent。来源分支：Community。来源提交：d3f0b0644e3d235ecf5f5fef92e3f0496d840add。生成日期：2026-11-15。
 
 本仓库保留 GitHub 初始化提交，并在 Community 分支发布经过检查的独立源码快照。GitLab 开发仓库继续独立维护，不复制其 Git 对象或完整历史，也不配置自动镜像。
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "createdAt": "2026-11-14T06:00:32.908Z",
+  "createdAt": "2026-11-15T04:14:40.704Z",
   "files": [
     {
       "path": ".gitignore",
@@ -5567,8 +5567,12 @@
       "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
     },
     {
+      "path": "README.en.md",
+      "sha256": "4694fc9c49a05d47d7f1f35f3e4cc19dce2cc375be8ca22a84d3c406fad1cabf"
+    },
+    {
       "path": "README.md",
-      "sha256": "13ca0c7ec6d287870cbac692abb2be43ec427e6e0f43e2e0195030a535c165a8"
+      "sha256": "b0c074ca19a0d13880b4295cf9add16cb058a980fa238395d68d07476c3821bd"
     },
     {
       "path": "tools/community-export.test.cjs",
